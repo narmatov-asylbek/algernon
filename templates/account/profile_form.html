@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Основная информация
+{% endblock title %}
+
+{% block content %}
+    <section class="user_settings profile_content">
+    <h1>Основная информация</h1>
+        <form action="{% url 'account:update_settings' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ settings_form.as_p }}
+            <input type="submit" value="Сохранить">
+        </form>
+    </section>
+
+    <section class="user_contacts">
+        <h1>Контакты</h1>
+        <form action="{% url 'account:update_contacts' %}" method="post">
+            {% csrf_token %}
+            {{ contact_form.as_p }}
+            <input type="submit" value="Сохранить" class="button is-primary">
+        </form>
+    </section>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Мои Циклы
+{% endblock title %}
+
+{% block content %}
+    <section class="content">
+        <div class="content_top">
+            <div class="content_title">
+                <h1>Мои циклы</h1>
+            </div>
+            <div class="content_action">
+                <a href="{% url 'books:new_cycle' %}" class="button button_success">Добавить цикл</a>
+            </div>
+        </div>
+        <hr>
+        <div class="content_body">
+            <div class="list_table">
+                {% for cycle in cycles %}
+                    <div class="list_item" style="display: block;">
+                        <div class="list_item_content">
+                            <div class="list_item_title">
+                                <a href="" style="font-size: 24px; color:var(--blue-dark);">{{ cycle.name }}</a>
+                            </div>
+                            <div class="list_item_details">
+                                <div>
+                                    {% if cycle_is_finished %}
+                                    <span>Завершен</span>
+                                    {% else %}
+                                        <span>В процессе</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="list_item_buttons" style="display: flex; justify-content:space-between; margin-top: 20px">
+                                <a href="{% url 'books:edit_cycle' cycle.id %}" class="button button_default">Редактировать</a>
+                                <button data-object-id="{{ cycle.id }}" data-url="{% url 'books:delete_cycle' cycle.id %}"
+                                        type="submit" class="button button_danger" id="delete_cycle_button">
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty_list">
+                        <h1>У вас нет ни одного цикла</h1>
+                        <p>
+                            <a href="{% url 'books:new_cycle' %}" class="button button_default">Добавить Цикл</a>
+                            </p>
+                    </div>
+                {% endfor %}
+        </div>
+    </section>
+
+{% endblock content %}

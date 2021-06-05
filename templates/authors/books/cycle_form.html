@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Добавить цикл
+{% endblock title %}
+
+{% block content %}
+    <div class="content_body">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form_field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="button button_success" style="margin-top: 20px;">Сохранить</button>
+        </form>
+    </div>
+
+{% endblock content %}

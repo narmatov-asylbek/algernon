@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
+
+/* Margins and paddings to sections and headers */
+* {
+  box-sizing: border-box;
+}
+
+html {
+    font-family: Oxygen, sans-serif;
+    font-size: 16px;
+    color: #444;
+}
+
+li {
+    list-style: none;
+}
+
+a, a:hover, a:visited {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section {
+    max-width: 800px;
+  min-width: 740px;
+}
+.reader {
+  width: 100%;
+}
+h1 {
+    font-size: 40px;
+    text-align: center;
+}
+
+p {
+  font-size: 18px;
+  display: block;
+  margin: 0 0 11px;
+  line-height: 1.35em;
+}

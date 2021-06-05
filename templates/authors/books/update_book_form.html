@@ -1,0 +1,39 @@
+{% extends 'profile_base.html' %}
+{% load static %}
+{% block title %}
+    Изменить настройки книги
+{% endblock title %}
+
+{% block content %}
+    <div class="content_top">
+        <h3>{{ book.title }}</h3>
+    </div>
+    <div class="content_nav">
+        <ul class="content_menu">
+            <li class="content_menu_item">
+                <a href="{% url 'books:update_book' book.id %}" class="content_menu_link">Настройки</a>
+            </li>
+            <li class="content_menu_item">
+                <a href="{% url 'books:update_book_content' book.id %}" class="content_menu_link">Текст</a>
+            </li>
+        </ul>
+        <div class="content_right">
+            <a href="{% url 'books:detail' book.id %}">На страницу произведения</a>
+        </div>
+    </div>
+
+    <div class="aside"></div>
+    <div class="content_body">
+        <form action="" method="post" enctype="multipart/form-data" id="update_book_form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form_field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="button button_success" style="margin-top: 20px;">Сохранить</button>
+        </form>
+    </div>
+
+{% endblock content %}

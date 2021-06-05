@@ -1,0 +1,70 @@
+{% extends 'profile_base.html' %}
+{% load static %}
+
+{% block title %}
+    Мои произведения
+{% endblock title %}
+
+{% block content %}
+    <section class="content">
+        <div class="content_top">
+            <div class="content_title">
+                <h1>Мои произведения</h1>
+            </div>
+            <div class="content_action">
+                <a href="{% url 'books:new_book' %}" class="button button_success">Добавить книгу</a>
+            </div>
+        </div>
+        <hr>
+        <div class="content_body">
+            <div class="list_table">
+                {% for book in books %}
+                    <div class="list_item">
+                        <div class="list_cover_wrapper">
+                            <div class="list_cover">
+                                <a href=""><img src="{{ book.cover.url }}" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="list_item_content">
+                            <div class="list_item_title">
+                                <a href="{% url 'books:update_book' book.id %}">{{ book.title }}</a>
+                            </div>
+                            <div class="list_item_details">
+                                <div>
+                                    <span>Размер:</span>
+                                    <span>{{ book.get_total_len }}знаков</span>,
+                                    <span>{{ book.get_total_author_list_len }} авторских листов</span>
+                                </div>
+                                <div><span>Обновлено: </span>{{ book.updated_at.date }}</div>
+                            </div>
+                            <div class="book_item_stats">
+                                <span>Просмотров</span>
+                                <span>Комментарии: {{ book.get_comment_count }}</span>
+                                <span>Лайки: </span>
+                                <span>Рецензии:</span>
+                                <span>Добавили в библиотеку: </span>
+                            </div>
+                            <div class="list_item_buttons">
+                                <a href="{% url 'books:update_book' book.id %}">Изменить Настройки</a>
+                                <a href="">Редактировать Текст</a>
+                                <a href="">Перейти на страницу произведения</a>
+                                <a href="{% url 'reader:read_book' book.id %}">Открыть в читалке</a>
+                                <a href="">Активность читателей</a>
+                                <a href="">Ссылка на книгу</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty_list">
+                        <h1>У вас нет ни одной книги</h1>
+                        <p>
+                            <a href="{% url 'books:new_book' %}" class="button button_default">Добавить Книгу</a>
+                            </p>
+                    </div>
+                {% endfor %}
+
+        </div>
+    </section>
+
+{% endblock content %}

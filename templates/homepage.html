@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Algernon - читайте книги онлайн
+{% endblock title %}
+
+{% block content %}
+    <section>
+        <div class="book_list_wrapper">
+        <h2>Самые популярные книги</h2>
+            <ul class="book_list">
+                {% for book in books %}
+                <li class="book_item">
+                    <a href="{{ book.get_absolute_url }}">
+                        <div class="pic_area"><img src="{{ book.cover.url }}" alt="{{ book.title }}"></div>
+                        <div class="info_area">
+{#                            <p><a href="">{{ book.genre }}</a></p>#}
+                            <p class="book_title">{{ book.title }}</p>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+{% endblock content %}

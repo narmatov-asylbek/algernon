@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css";
+
+body {
+    background-color: #eef3fb;
+}
+:root {
+    --green: #47cf73;
+    --green-light: #d3ffe1;
+    --green-dark: #248c46;
+    --yellow: #ffdd40;
+    --yellow-light: #f9e9a2;
+    --yellow-dark: #d9b200;
+    --purple: #ae63e4;
+    --purple-light: #be9fe4;
+    --purple-dark: #754cac;
+    --red: #ff3c41;
+    --red-very-light: #ffcfcb;
+    --red-light: #f19994;
+    --red-dark: #a00808;
+    --blue: #0ebeff;
+    --blue-light: #76daff;
+    --blue-dark: #3d88c3;
+    --gray: #9b9dad;
+    --gray-light-6: #f1f1f3;
+    --gray-light-5: #e3e4e8;
+    --gray-light-4: #d5d7de;
+    --gray-light-3: #c7c9d3;
+    --gray-light-2: #b7bbc8;
+    --gray-light-1: #aaaebc;
+    --gray-dark-1: #868ca0;
+    --gray-dark-2: #717790;
+    --gray-dark-3: #5a5f73;
+    --gray-dark-4: #444857;
+    --gray-dark-5: #2c303a;
+    --gray-dark-6: #1e1f26;
+    --gray-dark-7: #131417;
+    --gray-dark-8: #0a0a0c;
+    --gray-dark-9: #010101;
+}

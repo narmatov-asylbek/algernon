@@ -1,0 +1,90 @@
+/* Detail page */
+.detail_container {
+    display: flex;
+}
+
+.detail_sidebar {
+    width: 280px;
+    padding-right: 20px;
+}
+.cover_section img {
+    width: 250px;
+    height: 360px;
+}
+.detail_content {
+    width: calc(100% - 280px);
+}
+
+.tabs_list {
+    display: flex;
+}
+
+.tabs_list li {
+    margin-left: 40px;
+}
+
+.chapter_list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.chapter_date {
+    color: #b1b1b1;
+    margin-right: 30px;
+}
+
+.chapter_list span {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.chapter_title {
+    width: 50%;
+    color: #000;
+}
+
+.chapter_num {
+    color: #000;
+}
+
+/* Main page */
+.book_list_wrapper ul {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    padding: 0;
+
+}
+
+.book_list li {
+    width: 50%;
+    border: 1px solid #ddd;
+    margin-right: 20px;
+    list-style: none;
+    background: #ffffff;
+
+}
+
+.pic_area {
+    margin-right: 20px;
+}
+
+.book_list img {
+    width: 92px;
+    height: 98px;
+}
+
+.book_list a {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.book_title {
+    font-size: 20px;
+    font-weight: 500;
+}

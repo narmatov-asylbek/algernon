@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ Войти
+{% endblock title %}
+
+{% block content %}
+    <section class="login">
+    {% for message in messages %}
+        <ul>
+            <li>{{ message }}</li>
+        </ul>
+    {% endfor %}
+
+        <h1></h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Войти">
+        </form>
+    </section>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends 'profile_base.html' %}
+
+{% block title %}
+    Изменить данные цикла
+{% endblock title %}
+
+{% block content %}
+    <div class="aside"> </div>
+    <div class="content_body">
+        <form action="" method="post" enctype="multipart/form-data" id="update_cycle_settings">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form_field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="button button_success" style="margin-top: 20px;">Сохранить</button>
+        </form>
+    </div>
+
+{% endblock content %}
