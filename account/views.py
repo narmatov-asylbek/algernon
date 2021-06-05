@@ -42,7 +42,7 @@ class UserProfileUpdateView(LoginRequiredMixin, View):
         contact_form = ContactForm(instance=request.user.contact)
         context = {
             'settings_form': settings_form,
-            'contact_form': contact_form
+            'contact_form': contact_form,
         }
         return render(request, 'account/profile_form.html', context)
 

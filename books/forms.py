@@ -67,10 +67,10 @@ class CycleForm(forms.ModelForm):
         fields = ['name', 'desciption', 'is_finished']
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': 'form-control'
+                'class': 'form-control input'
             }),
             'desciption': forms.Textarea(attrs={
-                'class': 'form-control',
+                'class': 'form-control textarea',
                 'cols': '20',
                 'rows': '6'
             }),

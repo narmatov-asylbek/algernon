@@ -2,68 +2,85 @@
 {% load static %}
 
 {% block title %}
-    Мои произведения
+    Мои Книги
 {% endblock title %}
 
 {% block content %}
-    <section class="content">
-        <div class="content_top">
-            <div class="content_title">
-                <h1>Мои произведения</h1>
-            </div>
-            <div class="content_action">
-                <a href="{% url 'books:new_book' %}" class="button button_success">Добавить книгу</a>
+    <section class="section">
+        <div class="columns">
+            <div class="column is-4"><h1 class="title is-5">Ваши книги</h1></div>
+            <div class="column is-4 is-offset-4">
+                <a href="{% url 'books:new_book' %}" class="button is-success">Добавить Книгу</a>
             </div>
         </div>
-        <hr>
-        <div class="content_body">
-            <div class="list_table">
+        <div class="columns">
+            <div class="column">
                 {% for book in books %}
-                    <div class="list_item">
-                        <div class="list_cover_wrapper">
-                            <div class="list_cover">
-                                <a href=""><img src="{{ book.cover.url }}" alt=""></a>
-                            </div>
-                        </div>
-                        <div class="list_item_content">
-                            <div class="list_item_title">
-                                <a href="{% url 'books:update_book' book.id %}">{{ book.title }}</a>
-                            </div>
-                            <div class="list_item_details">
-                                <div>
-                                    <span>Размер:</span>
-                                    <span>{{ book.get_total_len }}знаков</span>,
-                                    <span>{{ book.get_total_author_list_len }} авторских листов</span>
-                                </div>
-                                <div><span>Обновлено: </span>{{ book.updated_at.date }}</div>
-                            </div>
-                            <div class="book_item_stats">
-                                <span>Просмотров</span>
-                                <span>Комментарии: {{ book.get_comment_count }}</span>
-                                <span>Лайки: </span>
-                                <span>Рецензии:</span>
-                                <span>Добавили в библиотеку: </span>
-                            </div>
-                            <div class="list_item_buttons">
-                                <a href="{% url 'books:update_book' book.id %}">Изменить Настройки</a>
-                                <a href="">Редактировать Текст</a>
-                                <a href="">Перейти на страницу произведения</a>
-                                <a href="{% url 'reader:read_book' book.id %}">Открыть в читалке</a>
-                                <a href="">Активность читателей</a>
-                                <a href="">Ссылка на книгу</a>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    {% empty %}
-                    <div class="empty_list">
-                        <h1>У вас нет ни одной книги</h1>
-                        <p>
-                            <a href="{% url 'books:new_book' %}" class="button button_default">Добавить Книгу</a>
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image is-64x64">
+                                <a href="{% url 'books:update_book' book.id %}"><img src="{{ book.cover.url }}" alt=""></a>
                             </p>
-                    </div>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <a href="{% url 'books:update_book' book.id %}" class="is-size-5 has-text-info">{{ book.title }}</a>
+                                <p><b>Размер:</b> {{ book.get_total_len }} зн., {{ book.get_total_author_list_len }} а.л
+                                <span class="is-pulled-right"><b>Обновление: </b>{{ book.updated_at.date }}</span>
+                                </p>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                    <a class="level-item ml-1">
+                                        <span class="icon is-small"><i class="far fa-eye"></i></span>
+                                    </a>
+                                    <a class="level-item ml-1">
+                                        <span class="icon is-small"><i class="fas fa-book-reader"></i></span>
+                                    </a>
+                                    <a class="level-item ml-1">
+                                        <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                                    </a>
+                                    <a class="level-item ml-1">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-comments"></i> <strong class="ml-1">{{ book.get_comment_count }}</strong>
+                                        </span>
+                                    </a>
+                                    <a class="level-item ml-1">
+                                        <span class="icon is-small"><i class="fas fa-pen-nib"></i></span>
+                                    </a>
+                                </div>
+                            </nav>
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <a href="{% url 'books:update_book' book.id %}" class="button">
+                                         <i class="fas fa-cog"></i>
+                                    </a>
+                                </div>
+                                <div class="control">
+                                    <a href="{% url 'books:update_book_content' book.id %}" class="button">
+                                         <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </div>
+                                <div class="control">
+                                    <a href="{% url 'books:detail' book.id %}" class="button">
+                                         <i class="fas fa-book"></i>
+                                    </a>
+                                </div>
+                                <div class="control">
+                                    <a href="{{ book.get_first_chapter }}" class="button">
+                                         <i class="fas fa-book-open"></i>
+                                    </a>
+                                </div>
+                                <div class="control">
+                                    <a href="{% url 'books:update_book_content' book.id %}" class="button">
+                                         <i class="fas fa-link"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
                 {% endfor %}
-
+            </div>
         </div>
     </section>
 

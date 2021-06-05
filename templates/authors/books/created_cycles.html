@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'profile_base.html' %}
 {% load static %}
 
 {% block title %}
@@ -6,51 +6,37 @@
 {% endblock title %}
 
 {% block content %}
-    <section class="content">
-        <div class="content_top">
-            <div class="content_title">
-                <h1>Мои циклы</h1>
-            </div>
-            <div class="content_action">
-                <a href="{% url 'books:new_cycle' %}" class="button button_success">Добавить цикл</a>
+    <section class="section">
+        <div class="columns">
+            <div class="column is-4"><h1 class="title is-5">Ваши циклы</h1></div>
+            <div class="column is-4 is-offset-4">
+                <a href="{% url 'books:new_cycle' %}" class="button is-success">Создать Цикл</a>
             </div>
         </div>
-        <hr>
-        <div class="content_body">
-            <div class="list_table">
+        <div class="columns">
+            <div class="column">
                 {% for cycle in cycles %}
-                    <div class="list_item" style="display: block;">
-                        <div class="list_item_content">
-                            <div class="list_item_title">
-                                <a href="" style="font-size: 24px; color:var(--blue-dark);">{{ cycle.name }}</a>
-                            </div>
-                            <div class="list_item_details">
-                                <div>
-                                    {% if cycle_is_finished %}
-                                    <span>Завершен</span>
-                                    {% else %}
-                                        <span>В процессе</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="list_item_buttons" style="display: flex; justify-content:space-between; margin-top: 20px">
-                                <a href="{% url 'books:edit_cycle' cycle.id %}" class="button button_default">Редактировать</a>
-                                <button data-object-id="{{ cycle.id }}" data-url="{% url 'books:delete_cycle' cycle.id %}"
-                                        type="submit" class="button button_danger" id="delete_cycle_button">
+                    <div class="block">
+                        <div class="field">
+                            <a href="{% url 'books:edit_cycle' cycle.id %}"
+                               class="is-size-2 has-text-info">{{ cycle.name }}</a>
+                        </div>
+                        <div class="field is-grouped mt-5 is-flex is-justify-content-space-between">
+                            <p class="control is-pulled-left">
+                                <a href="{% url 'books:edit_cycle' cycle.id %}" class="button is-link">
+                                    Редактировать
+                                </a>
+                            </p>
+                            <p class="control is-pulled-right">
+                                <a href="{% url 'books:delete_cycle' cycle.id %}" class="button is-danger">
                                     Удалить
-                                </button>
-                            </div>
+                                </a>
+                            </p>
                         </div>
                     </div>
-                    </div>
-                    {% empty %}
-                    <div class="empty_list">
-                        <h1>У вас нет ни одного цикла</h1>
-                        <p>
-                            <a href="{% url 'books:new_cycle' %}" class="button button_default">Добавить Цикл</a>
-                            </p>
-                    </div>
                 {% endfor %}
+
+            </div>
         </div>
     </section>
 

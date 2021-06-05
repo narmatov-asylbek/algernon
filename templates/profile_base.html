@@ -1,17 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %} {% endblock title %}</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-  </head>
-  <body>
-    {% block content %}
+</head>
+<body>
+{% include 'includes/_header.html' %}
+<div class="container pt-6">
+    <div class="columns">
+        {% include 'includes/_sidebar.html' %}
+        <div class="column is-10 box">
+            <div class="columns is-centered">
+                <div class="column is-12">
+                    {% block content %}
 
-    {% endblock content %}
-    <script src="{% static 'js/book_settings.js' %}"></script>
-  </body>
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'js/book_settings.js' %}"></script>
+</body>
 </html>

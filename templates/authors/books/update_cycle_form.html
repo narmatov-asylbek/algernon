@@ -5,18 +5,34 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="aside"> </div>
-    <div class="content_body">
-        <form action="" method="post" enctype="multipart/form-data" id="update_cycle_settings">
+    <section class="section">
+        <h1 class="title is-4 has-text-info">Изменить данные цикла</h1>
+        <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% for field in form %}
-                <div class="form_field">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
+            <div class="field">
+                <label class="label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                <div class="control">
+                    {{ form.name }}
                 </div>
-            {% endfor %}
-            <button type="submit" class="button button_success" style="margin-top: 20px;">Сохранить</button>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ form.desciption.id_for_label }}">{{ form.desciption.label }}</label>
+                <div class="control">
+                    {{ form.desciption }}
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <label class="checkbox" for="{{ form.is_finished.id_for_label }}">
+                        {{ form.is_finished }}
+                        Цикл закончен
+                    </label>
+                </div>
+            </div>
+            <div class="control">
+                <button type="submit" class="button is-success is-medium is-outlined">Сохранить</button>
+            </div>
         </form>
-    </div>
-
+    </section>
 {% endblock content %}

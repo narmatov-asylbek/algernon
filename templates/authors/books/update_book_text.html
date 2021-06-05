@@ -1,81 +1,58 @@
 {% extends 'profile_base.html' %}
-{% load static %}
+
 {% block title %}
-    Изменить настройки книги
+    Изменить Настройки Книги
 {% endblock title %}
 
 {% block content %}
-    <div class="content_top">
-        <h3>{{ book.title }}</h3>
-    </div>
-    <div class="content_nav">
-        <ul class="content_menu">
-            <li class="content_menu_item">
-                <a href="{% url 'books:update_book' book.id %}" class="content_menu_link">Настройки</a>
-            </li>
-            <li class="content_menu_item">
-                <a href="" class="content_menu_link">Текст</a>
-            </li>
-        </ul>
-        <div class="content_right">
-            <a href="{% url 'books:detail' book.id %}">На страницу произведения</a>
+    <section class="section">
+        <h1 class="title is-4">{{ book.title }}</h1>
+        <div class="tabs">
+            <ul>
+                <li><a href="{% url 'books:update_book' book.id %}">Настройки</a></li>
+                <li class="is-active"><a href="{% url 'books:update_book_content' book.id %}">Текст</a></li>
+            </ul>
         </div>
-    </div>
-
-    <div class="aside"></div>
-    <div class="content_body">
-        <div class="book_item_stats">
-            <div class="mt-5">
-                <b>Размер: </b><span>{{ book.get_total_len }}зн, {{ book.get_total_author_list_len }} ав.л</span>
-            </div>
-            <div class="mt-5">
-                <b>Статус: </b><span>{{ book.get_status_display }}</span>
-            </div>
-            <div class="mt-5">
-                <b>Скачивание: </b>
-                <span>{{ book.get_can_download_options }}</span>
+        <div class="block">
+            <p><strong>Размер: </strong><span
+                    class="ml-1">{{ book.get_total_len }} зн., {{ book.get_total_author_list_len }} а.л</span></p>
+            <p><strong>Статус: </strong><span class="ml-1">{{ book.get_status_display }}</span></p>
+            <p><strong>Скачивание: </strong><span class="ml-1">{{ book.get_can_download_options }}</span></p>
+        </div>
+        <div class="block">
+            <a href="{% url 'chapters:add_chapter' book.id %}" class="button is-link">Добавить часть</a>
+        </div>
+        <div class="block">
+            <div class="is-grouped">
+                <a href="" class="button is-success">Изменить статус на "завершено"</a>
+                <a href="" class="button is-warning ml-4">Ознакомительный фрагмент</a>
+                <a href="" class="button is-danger is-outlined is-pulled-right">Удалить</a>
             </div>
         </div>
-        <div class="buttons_wrapper">
-            <div class="add_chapter mt-20">
-                <a href="{% url 'chapters:add_chapter' book.id%}" class="button button_success">
-                    Добавить часть
-                </a>
-            </div>
-            <div class="change_book_buttons mt-20">
-                <button class="button button_success mr-20 ">
-                    Изменить статус на "завершено"
-                </button>
-                <button class="button button_gray mr-20 ">
-                    Ознакомительный фрагмент
-                </button>
-                <button class="button button_danger mr-20 ">
-                    Удалить
-                </button>
-            </div>
+        <div class="block">
+            <h4 class="is-size-4">Содержание</h4>
         </div>
-    </div>
-    <div class="chapter_header mt-20">
-        <h3>Содержание</h3>
-    </div>
-    <ul class="chapter_list mt-20">
-        {% for chapter in book.chapters.all %}
-        <li class="chapter_item">
-            <div class="chapter_right">
-                <b>{{ chapter.title }}</b>
-                <span class="ml-20">{{ chapter.get_chapter_status }}</span>
-                <span class="ml-20">{{ chapter.get_chapter_len }}зн</span>
-            </div>
-            <div class="chapter_left">
-                <span><a href="">Редактировать</a></span>
-                <span><a href="{{ chapter.get_absolute_url }}">Открыть в читалке</a></span>
-                <span><a href="">Опубликовать</a></span>
-                <span><a href="">Удалить</a></span>
-            </div>
-        </li>
-        {% endfor %}
-
-
-    </ul>
-
+        <div class="columns is-multiline">
+            {% for chapter in book.chapters.all %}
+                <div class="column is-12 mt-2">
+                    <div class="columns">
+                        <div class="column is-4">
+                            <p><b>{{ chapter.title }}</b></p>
+                        </div>
+                        <div class="column is-4">
+                            <span class="ml-1">{{ chapter.get_chapter_status }}</span>
+                            <span class="ml-1">({{ chapter.get_chapter_len }} знаков)</span>
+                        </div>
+                        <div class="column is-grouped is-4 has-text-right chapter-buttons">
+                            <a href="" class="button is-small"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="" class="button is-small"><i class="fas fa-book-open"></i></a>
+                            <a href="" class="button is-small"><i class="far fa-eye"></i></a>
+                            <a href="" class="button is-small is-danger is-outlined"><i
+                                    class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock content %}

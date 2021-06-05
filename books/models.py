@@ -150,7 +150,6 @@ class Book(models.Model):
 
     def get_comment_count(self):
         return len([comment for comment in self.comments.all()])
-
     def get_can_download_options(self):
         if self.can_download == "A":
             return "Разрешено"

@@ -11,12 +11,15 @@
         {{ form.media }}
             {% csrf_token %}
             {% for field in form %}
-                <div class="form_field">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
+                <div class="field">
+                    <label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <div class="control">
+                        {{ field }}
+                    </div>
                 </div>
+
             {% endfor %}
-            <button type="submit" class="button button_success" style="margin-top: 20px;">Сохранить</button>
+            <button type="submit" class="button is-success is-medium" style="margin-top: 20px;">Сохранить</button>
         </form>
     </div>
 

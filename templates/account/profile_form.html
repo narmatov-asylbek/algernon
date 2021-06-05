@@ -1,25 +1,133 @@
-{% extends 'base.html' %}
+{% extends 'profile_base.html' %}
 
 {% block title %}
-Основная информация
+    Добавить книгу
 {% endblock title %}
 
 {% block content %}
-    <section class="user_settings profile_content">
-    <h1>Основная информация</h1>
-        <form action="{% url 'account:update_settings' %}" method="post" enctype="multipart/form-data">
+    <section class="section">
+        <h1 class="title is-4 has-text-info">Настройки пользователя</h1>
+        <form action="{% url 'account:update_settings' %}" method="post"
+              enctype="multipart/form-data">
             {% csrf_token %}
-            {{ settings_form.as_p }}
-            <input type="submit" value="Сохранить">
+            <figure class="image is-128x128">
+                <img class="is-rounded" src="{{ request.user.image.url }}" alt="">
+            </figure>
+            <div class="file has-name">
+                <label class="file-label">
+                    {{ settings_form.image }}
+                </label>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.pseudonym.id_for_label }}">{{ settings_form.pseudonym.label }}</label>
+                <div class="control">
+                    {{ settings_form.pseudonym }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.name.id_for_label }}">{{ settings_form.name.label }}</label>
+                <div class="control">
+                    {{ settings_form.name }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.slug.id_for_label }}">{{ settings_form.slug.label }}</label>
+                <div class="control">
+                    {{ settings_form.slug }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.birthday.id_for_label }}">{{ settings_form.birthday.label }}</label>
+                <div class="control">
+                    {{ settings_form.birthday }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.birthday_visibility.id_for_label }}">{{ settings_form.birthday_visibility.label }}</label>
+                <div class="control">
+                    <div class="select">
+                        {{ settings_form.birthday_visibility }}
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.status.id_for_label }}">{{ settings_form.status.label }}</label>
+                <div class="control">
+                    {{ settings_form.status }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.gender.id_for_label }}">{{ settings_form.gender.label }}</label>
+                <div class="control">
+                    <div class="select">
+                        {{ settings_form.gender }}
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ settings_form.information.id_for_label }}">{{ settings_form.information.label }}</label>
+                <div class="control">
+                    {{ settings_form.media }}
+                    {{ settings_form.information }}
+                </div>
+            </div>
+            <div class="control">
+                <button type="submit" class="button is-success is-outlined is-medium">Сохранить
+                </button>
+            </div>
         </form>
     </section>
 
-    <section class="user_contacts">
-        <h1>Контакты</h1>
+    <section class="section">
+        <h1 class="title is-4 has-text-info">Изменить контактные данные</h1>
         <form action="{% url 'account:update_contacts' %}" method="post">
             {% csrf_token %}
-            {{ contact_form.as_p }}
-            <input type="submit" value="Сохранить" class="button is-primary">
+            <div class="field">
+                <label class="label"
+                       for="{{ contact_form.website.id_for_label }}">{{ contact_form.website.label }}</label>
+                <div class="control">
+                    {{ contact_form.website }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ contact_form.twitter.id_for_label }}">{{ contact_form.twitter.label }}</label>
+                <div class="control">
+                    {{ contact_form.twitter }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ contact_form.instagram.id_for_label }}">{{ contact_form.instagram.label }}</label>
+                <div class="control">
+                    {{ contact_form.instagram }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ contact_form.facebook.id_for_label }}">{{ contact_form.facebook.label }}</label>
+                <div class="control">
+                    {{ contact_form.facebook }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label"
+                       for="{{ contact_form.vk.id_for_label }}">{{ contact_form.vk.label }}</label>
+                <div class="control">
+                    {{ contact_form.vk }}
+                </div>
+            </div>
+            <button type="submit" class="button is-success is-outlined is-medium">Сохранить</button>
         </form>
     </section>
-{% endblock %}
+
+
+{% endblock content %}
