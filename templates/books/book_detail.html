@@ -1,1 +1,174 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ book.title }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container mt-6">
+        <div class="columns">
+            <div class="column is-9 box mr-6">
+                <div class="columns">
+                    <div class="column is-4">
+                        <div class="block">
+                            <a href="{{ book.get_first_chapter }}"><img class="image is-195-305"
+                                                                        src="{{ book.cover.url }}" alt=""></a>
+                        </div>
+                        <div class="block">
+                            <div class="buttons">
+                                <a href="{{ book.get_first_chapter }}" class="button is-success is-fullwidth">Читать
+                                    книгу</a>
+                                {% if request.user.is_authenticated %}
+                                    <input name="{{ book.id }}" type="submit" value="Добавить в библиотеку"
+                                           class="button is-fullwidth" id="add-to-lib">
+                                {% else %}
+                                    <a href="{% url 'account:register' %}" class="button is-primary is-fullwidth">Добавить
+                                        в библиотеку</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-8">
+                        <div class="block">
+                            <h1 class="title is-4">{{ book.title }}</h1>
+                            <div class="block book-authors">
+                                <span class="authors"><a href="">{{ book.author.name }}</a></span>
+                            </div>
+                            <div class="block">
+                                <span class="button is-disable is-small mr-3" type="">
+                                <span class="icon is-small mr-4"><i class="far fa-eye mr-1"></i></span>
+                                </span>
+                                <button id="add-like-to-book" class="button is-small">
+                                    <span class="icon is-small"><i class="fas fa-heart mr-1"></i></span>
+                                    <span class="ml-2" id="like-count">{{ book.get_likes_count }}</span>
+                                </button>
+
+                            </div>
+                            <div class="block book-stats block book-tags"></div>
+                        </div>
+                        <div class="block">
+                            {#                        TODO: Make tabs#}
+                            <div class="block">
+                                {{ book.description }}
+                            </div>
+                            <div class="block">
+                                <b>Примечание автора: </b>
+                                {{ book.remark }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-3">
+                <div class="box">
+                    <div class="author-img"><img src="{{ book.author.get_image_url }}" alt=""></div>
+                    <div class="block"></div>
+                    <div class="block">
+                        <input type="submit" value="Подписаться" class="button is-primary is-fullwidth" id="add-to-lib">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-9 box">
+                <div class="columns">
+                    <div class="column is-5">
+                        <div class="tabs is-medium">
+                            <ul>
+                                <li class="is-active"><a>Комментарии</a></li>
+                                <li><a>Рецензии</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column is-3 is-offset-4">
+                        <a href="" class="button is-link">Написать рецензию</a>
+                    </div>
+                </div>
+                <div class="block">
+                    <form class="media" method="post">
+                        {% csrf_token %}
+                        <figure class="media-left">
+                            <p class="image is-64x64">
+                                <img class="is-128-128 is-rounded" src="{{ request.user.get_image_url }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="field">
+                                <p class="control">
+                                    {{ comment_form.comment_text }}
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control">
+                                    <button class="button">Опубликовать комментарий</button>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="block">
+                    {% for comment in comments %}
+
+                        <div class="media">
+                            <figure class="media-left">
+                                <p class="image is-64x64">
+                                    <img class="is-128-128" src="{{ comment.user.get_image_url }}">
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ comment.user.name }}</strong>
+                                        <br>
+                                        {{ comment.comment_text }}
+                                        <br>
+                                        <small><a>Like</a> · <a>Reply</a> {{ comment.created_at.date }}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block scripts %}
+
+        <script>
+            $('#add-to-lib').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'books:add_to_library' book.id %}",
+                    data: {'book_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.message === 'Added') {
+                            $('input#add-to-lib').val('Добавлено в библиотеку');
+                            $('input#add-to-lib').classList.add('is-primary')
+                        } else {
+                            $('input#add-to-lib').val('Добавить в библиотеку');
+                        }
+                    },
+                    error: function (rs, e) {
+                        alert("Ошибка");
+                    }
+                });
+            })
+            $('#add-like-to-book').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'books:add_like_to_book' book.id %}",
+                    data: {'book_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                    dataType: "json",
+                    success: function (response) {
+                        $("#like-count").text(response['likes']);
+                    },
+                    error: function (rs, e) {
+                        alert("Ошибка");
+                    }
+                });
+            })
+        </script>
+    {% endblock %}
+{% endblock content %}

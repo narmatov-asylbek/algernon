@@ -2,27 +2,53 @@
 {% load static %}
 
 {% block title %}
-Algernon - читайте книги онлайн
+    Algernon - читайте книги онлайн
 {% endblock title %}
 
 {% block content %}
-    <section>
-        <div class="book_list_wrapper">
-        <h2>Самые популярные книги</h2>
-            <ul class="book_list">
-                {% for book in books %}
-                <li class="book_item">
-                    <a href="{{ book.get_absolute_url }}">
-                        <div class="pic_area"><img src="{{ book.cover.url }}" alt="{{ book.title }}"></div>
-                        <div class="info_area">
-{#                            <p><a href="">{{ book.genre }}</a></p>#}
-                            <p class="book_title">{{ book.title }}</p>
+    <div class=" container box">
+        <section class="section">
+            <div class="columns">
+                <div class="column is-6">
+                    <h3 class="title is-3 has-text-black-ter is-pulled-left">Популярные книги</h3>
+                </div>
+                <div class="column is-6">
+                    <a href="" class="is-pulled-right">Показать все</a>
+                </div>
+            </div>
+            <p class="mt-3 mb-5">
+                Самые популярные книги за сегодня. Список обновляется каждый час
+            </p>
+            <div class="books">
+                <div class="columns is-multiline">
+                    {% for book in books %}
+                        <div class="column is-6 mb-6">
+                            <div class="media">
+                                <figure class="media-left">
+                                    <p class="image is-64x64">
+                                        <a href="{{ book.get_absolute_url }}">
+                                            <img src="{{ book.cover.url }}">
+                                        </a>
+                                    </p>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p>
+                                            <a href="{{ book.get_absolute_url }}">
+                                                <strong>{{ book.title }}</strong>
+                                            </a>
+                                            <br>
+                                            <a href="" class="has-text-grey-dark">
+                                                {{ book.author.name }}
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </section>
-
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </div>
 {% endblock content %}

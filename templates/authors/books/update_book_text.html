@@ -44,7 +44,7 @@
                             <span class="ml-1">({{ chapter.get_chapter_len }} знаков)</span>
                         </div>
                         <div class="column is-grouped is-4 has-text-right chapter-buttons">
-                            <a href="" class="button is-small"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="{% url 'chapters:edit_chapter' chapter.id %}" class="button is-small"><i class="fas fa-pencil-alt"></i></a>
                             <a href="" class="button is-small"><i class="fas fa-book-open"></i></a>
                             <a href="" class="button is-small"><i class="far fa-eye"></i></a>
                             <a href="" class="button is-small is-danger is-outlined"><i

@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.views.decorators.http import require_POST
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View, ListView
+from django.views.generic import View
 from django.contrib import messages
 
-from .forms import LoginForm, SettingsForm, ContactForm, UserRegistrationForm
-from books.models import Book
-
+from .forms import LoginForm, SettingsForm, ContactForm, CustomUserCreationForm
+from .models import Contact
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -69,18 +67,35 @@ def update_user_contacts(request):
 
 class UserRegistrationView(View):
     def get(self, request, *args, **kwargs):
-        form = UserRegistrationForm()
+        form = CustomUserCreationForm()
         context = {
             'form': form
         }
         return render(request, 'account/registration.html', context)
 
     def post(self, request, *args, **kwargs):
-        form = UserRegistrationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
 
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('/')
+            Contact.objects.create(user=user)
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(email=email, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'Вы успешно вошли в аккаунт')
+                    return redirect('/')
+                messages.error(request, 'Аккаунт заблокирован')
+                return redirect('/')
         messages.error(request, 'Произошла ошибка')
-        return redirect('account:register')
+        return render(request, 'account/registration.html', {'form': CustomUserCreationForm()})
+
+
+class UserLogoutView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            logout(request)
+            return redirect('/')
+        return redirect('/')

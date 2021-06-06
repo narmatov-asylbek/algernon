@@ -1,17 +1,21 @@
 from django import forms
-
+from django.contrib.auth.forms import UserCreationForm
 from .models import Contact, CustomUser
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'class': 'input'
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'input'
+    }))
 
 
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['image', 'pseudonym', 'slug',
+        fields = ['image', 'username', 'slug',
                   'name', 'status', 'birthday',
                   'birthday_visibility', 'gender',
                   'information']
@@ -19,7 +23,7 @@ class SettingsForm(forms.ModelForm):
             'image': forms.FileInput(attrs={
                 'class': "button"
             }),
-            'pseudonym': forms.TextInput(attrs={
+            'username': forms.TextInput(attrs={
                 'class': 'input'
             }),
             'slug': forms.TextInput(attrs={
@@ -72,17 +76,12 @@ class ContactForm(forms.ModelForm):
         }
 
 
-
-
-class UserRegistrationForm(forms.ModelForm):
+class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ['email', 'pseudonym', 'password']
-        widgets = {
-            'password': forms.PasswordInput,
-        }
+        fields = ['email', 'name']
 
     def __init__(self, *args, **kwargs):
-        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'input'

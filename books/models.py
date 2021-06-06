@@ -7,7 +7,6 @@ from django_quill.fields import QuillField
 from pytils.translit import slugify
 
 
-
 class Cycle(models.Model):
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -87,7 +86,7 @@ class Book(models.Model):
         related_name="books",
         verbose_name=_("Author")
     )
-    cover = models.ImageField(upload_to="images/%Y-%m-%d/")
+    cover = models.ImageField(upload_to="images/%Y-%m-%d/", default='images/no-image.jpg')
     title = models.CharField(max_length=150, unique=True, verbose_name=_("Book Name"))
     type = models.ForeignKey(
         Type,
@@ -150,6 +149,7 @@ class Book(models.Model):
 
     def get_comment_count(self):
         return len([comment for comment in self.comments.all()])
+    # TODO: Remove this method
     def get_can_download_options(self):
         if self.can_download == "A":
             return "Разрешено"
@@ -158,5 +158,55 @@ class Book(models.Model):
         else:
             return "Запрещено"
 
+    @property
+    def get_likes_count(self):
+        return Like.objects.filter(book=self).count()
 
 
+class Library(models.Model):
+    READING = "R"
+    READ = "AR"
+    TO_READ = "TR"
+    QUIT = "Q"
+
+    TAGS_OPTIONS = (
+        (READING, "Читаю"),
+        (READ, "Прочитано"),
+        (TO_READ, "Прочту позже"),
+        (QUIT, 'Брошено')
+    )
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='library'
+    )
+    books = models.ManyToManyField(
+        Book,
+        related_name='library_books',
+    )
+    tags = models.CharField(
+        max_length=3,
+        choices=TAGS_OPTIONS,
+        default=READING
+    )
+
+    def __str__(self):
+        return self.get_tags_display()
+
+
+class Like(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='user_likes'
+    )
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='book_likes'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)

@@ -10,9 +10,9 @@
         <form action="{% url 'account:update_settings' %}" method="post"
               enctype="multipart/form-data">
             {% csrf_token %}
-            <figure class="image is-128x128">
-                <img class="is-rounded" src="{{ request.user.image.url }}" alt="">
-            </figure>
+{#            <figure class="image is-128x128">#}
+{#                <img class="is-rounded" src="{{ request.get_image_url }}" alt="">#}
+{#            </figure>#}
             <div class="file has-name">
                 <label class="file-label">
                     {{ settings_form.image }}
@@ -20,9 +20,9 @@
             </div>
             <div class="field">
                 <label class="label"
-                       for="{{ settings_form.pseudonym.id_for_label }}">{{ settings_form.pseudonym.label }}</label>
+                       for="{{ settings_form.username.id_for_label }}">{{ settings_form.username.label }}</label>
                 <div class="control">
-                    {{ settings_form.pseudonym }}
+                    {{ settings_form.username }}
                 </div>
             </div>
             <div class="field">

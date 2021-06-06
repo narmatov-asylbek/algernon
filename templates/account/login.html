@@ -1,22 +1,39 @@
 {% extends 'base.html' %}
 
 {% block title %}
- Войти
+    Зарегестрироваться
 {% endblock title %}
 
 {% block content %}
-    <section class="login">
-    {% for message in messages %}
-        <ul>
-            <li>{{ message }}</li>
-        </ul>
-    {% endfor %}
-
-        <h1></h1>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Войти">
-        </form>
-    </section>
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-5 box mt-6">
+                <h1 class="has-text-centered is-4 has-text-info title">Войти</h1>
+                <div class="block">
+                    {% for message in messages %}
+                        <ul>
+                            <li class="error">{{ message }}</li>
+                        </ul>
+                    {% endfor %}
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="field">
+                            <label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <div class="control">
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <p class="control">
+                        <input type="submit" value="Войти" class="button is-success is-outlined is-fullwidth">
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

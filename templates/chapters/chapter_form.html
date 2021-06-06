@@ -10,15 +10,26 @@
         <form action="" method="post" enctype="multipart/form-data">
         {{ form.media }}
             {% csrf_token %}
-            {% for field in form %}
-                <div class="field">
-                    <label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    <div class="control">
-                        {{ field }}
-                    </div>
+            <div class="field">
+                <label class="label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                <div class="control">
+                    {{ form.title }}
                 </div>
-
-            {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label" for="{{ form.text.id_for_label }}">{{ form.text.label }}</label>
+                <div class="control">
+                    {{ form.text }}
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <label class="checkbox" for="{{ form.status.id_for_label }}">
+                        {{ form.status }}
+                        Опуликовать автоматически
+                    </label>
+                </div>
+            </div>
             <button type="submit" class="button is-success is-medium" style="margin-top: 20px;">Сохранить</button>
         </form>
     </div>

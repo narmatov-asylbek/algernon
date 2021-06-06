@@ -7,7 +7,6 @@ from django_quill.fields import QuillField
 from books.models import Book
 
 
-
 class Chapter(models.Model):
     STATUS = (
         ('D', _('Draft')),

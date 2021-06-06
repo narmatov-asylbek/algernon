@@ -3,13 +3,14 @@ from django.views.generic import View, ListView
 from django.http.response import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 from comments.forms import CommentForm
-from .models import Genre, Book, Cycle
+from .models import Genre, Book, Cycle, Library, Like
 from comments.models import Comment
 from chapters.models import Chapter
 from .forms import CycleForm, BookForm
-from chapters.forms import AddChapterForm
 
 
 class BookList(ListView):
@@ -164,3 +165,28 @@ class EditCycleView(View):
             cycle_form.save()
             return JsonResponse({'success': True})
         return JsonResponse({'success': False})
+
+@require_POST
+@login_required
+def add_to_library(request, book_id):
+    if request.method == 'POST':
+        book = get_object_or_404(Book, id=book_id)
+        library, created = Library.objects.get_or_create(user=request.user)
+        if Library.objects.filter(user=request.user, books=book).exists():
+            library.books.remove(book)
+            message = "Deleted"
+        else:
+            library.books.add(book)
+            message = "Added"
+        return JsonResponse({'success': True, 'message': message})
+
+@require_POST
+@login_required
+def add_like_to_book(request, book_id):
+    if request.method == 'POST':
+        book = Book.objects.get(id=book_id)
+        like, created = Like.objects.get_or_create(user=request.user, book=book)
+        if not created:
+            like.delete()
+        likes_count = book.get_likes_count
+        return JsonResponse({'success': True, 'likes': likes_count})
