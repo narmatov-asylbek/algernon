@@ -1,73 +1,97 @@
 <header class="box">
     <nav class="navbar  is-fixed-top" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                Algernon
-            </a>
-
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-               data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                    Книги
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    Algernon
                 </a>
 
-                <a class="navbar-item">
-                    Моя библиотека
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                   data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
                 </a>
+            </div>
 
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item">
+                        Книги
                     </a>
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            About
+                    <a class="navbar-item" href="{{ request.user.get_account_lib_url }}">
+                        Моя библиотека
+                    </a>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            Жанры
                         </a>
-                        <a class="navbar-item">
-                            Jobs
-                        </a>
-                        <a class="navbar-item">
-                            Contact
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            Report an issue
-                        </a>
+
+                        <div class="navbar-dropdown">
+                            {% for genre in genres %}
+                                <a class="navbar-item" href="{% url 'books:book_list_by_genre' genre.slug %}">
+                                    {{ genre.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a href="{% url 'books:new_book' %}" class="button is-success is-outlined">Добавить</a>
-                        {% if request.user.is_authenticated %}
-                        <a href="{% url 'account:logout' %}" class="button is-danger">
-                            <strong>Выйти</strong>
-                        </a>
-                        {% else %}
-                            <a href="{% url 'account:register' %}" class="button is-primary">
-                                <strong>Зарегестрироваться</strong>
-                            </a>
-                            <a href="{% url 'account:login' %}" class="button is-light">
-                                Войти
-                            </a>
-                        {% endif %}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a href="{% url 'books:new_book' %}" class="button is-success is-outlined">Добавить</a>
+                            {% if request.user.is_authenticated %}
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link button">
+                                    <img src="{{ request.user.get_image_url }}" alt="profile" class="is-32-32">
+{#                                    {{ request.user.name }}#}
+                                </a>
+
+                                <div class="navbar-dropdown is-right">
+                                    <a class="navbar-item" href="{% url 'authors:author_books' %}">
+                                        Мои произведения
+                                    </a>
+                                    <a class="navbar-item" href="">
+                                        Активность читателей
+                                    </a>
+                                    <div class="navbar-divider"></div>
+                                    <a class="navbar-item" href="">
+                                        Блог
+                                    </a>
+                                    <a class="navbar-item" href="">
+                                        Рецензии
+                                    </a>
+                                    <a class="navbar-item" href="">
+                                        Подборки
+                                    </a>
+                                    <div class="navbar-divider"></div>
+                                    <a class="navbar-item" href="{{ request.user.get_absolute_url }}">
+                                        Мой профиль
+                                    </a>
+                                    <a class="navbar-item" href="{% url 'account:settings' %}">
+                                        Личный кабинет
+                                    </a>
+                                    <div class="navbar-divider"></div>
+                                    <a class="navbar-item" href="{% url 'account:logout' %}">
+                                        Выйти
+                                    </a>
+                                </div>
+                            {% else %}
+                                <a href="{% url 'account:register' %}" class="button is-primary">
+                                    <strong>Зарегестрироваться</strong>
+                                </a>
+                                <a href="{% url 'account:login' %}" class="button is-light">
+                                    Войти
+                                </a>
+                            {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
     </nav>
 </header>

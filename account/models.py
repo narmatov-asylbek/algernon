@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
@@ -49,9 +50,15 @@ class CustomUser(AbstractUser):
             self.username = self.email
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('account:profile', args=[self.slug])
+
+    def get_account_lib_url(self):
+        return reverse('account:library', args=[self.slug])
+
     def get_image_url(self):
         if not self.image:
-            return 'images/no-image.jpg'
+            return None
         return self.image.url
 
 

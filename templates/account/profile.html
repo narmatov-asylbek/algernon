@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Основная информация
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 pt-5">
+        <div class="columns">
+            {% include 'includes/profile_menu.html' %}
+            <div class="column is-6 ml-3 box">
+                    <div class="block">
+                        <p class="title is-6 is-pulled-left">
+                            О себе
+                        </p>
+                        <p class="is-pulled-right">
+                            <a href=""><i class="fas fa-cog"></i></a>
+                        </p>
+                    </div>
+                    <div class="navbar-divider" data-content="OR"></div>
+                    {{ user.information.html|safe }}
+            </div>
+            <div class="column is-3 ml-3">
+                <div class="columns is-multiline">
+                    <div class="column is-12 box">
+                        <p>Друзья</p>
+                        <div class="navbar-divider"></div>
+                        <div class="block"></div>
+                    </div>
+                    <div class="column is-12 box">
+                        <p>Подписчики</p>
+                        <div class="navbar-divider"></div>
+                        <div class="block"></div>
+                    </div>
+                    <div class="column is-12 box">
+                        <p>Подписки</p>
+                        <div class="navbar-divider"></div>
+                        <div class="block"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

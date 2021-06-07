@@ -1,0 +1,27 @@
+<div class="column is-3 box">
+    <aside class="menu">
+  <p class="menu-label">
+    Основная информация
+  </p>
+  <ul class="menu-list">
+    <li><a>Лента Новостей</a></li>
+    <li><a class="{% if profile_active %}is-active{% endif %}" href="{{ request.user.get_absolute_url }}">Профиль</a></li>
+    <li><a class="{% if lib_active %}is-active{% endif %}" href="{{ request.user.get_account_lib_url }}">Библиотека</a></li>
+  </ul>
+  <p class="menu-label">
+    Остальное
+  </p>
+  <ul class="menu-list">
+    <li><a>Друзья</a></li>
+    <li>
+      <a class="">Подписчики</a>
+    </li>
+    <li>
+      <a class="">Комментарии</a>
+    </li>
+    <li>
+      <a class="">Рейтинг моих читателей</a>
+    </li>
+  </ul>
+</aside>
+</div>

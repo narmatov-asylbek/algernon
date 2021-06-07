@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-5 pt-5">
+        <div class="columns">
+            {% include 'includes/profile_menu.html' %}
+            <div class="column is-9 ml-3 box">
+            <h1 class="title is-4">Моя библиотека</h1>
+                <div class="navbar-divider"></div>
+            <div class="columns is-multiline">
+                {% for book in library.books.all %}
+                    <div class="column is-3 is-flex is-justify-content-center is-border-light-gray m-4">
+                        <div class="book-item has-text-centered is-justify-content-center">
+                            <a href="">
+                                <img src="{{ book.cover.url }}" alt="" class="" style="height: 200px; width: 134px">
+                            </a>
+                            <div class="mt-1"><a href="">{{ book.title }}</a></div>
+                            <div class="mt-1"><a href="">{{ user.name }}</a></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

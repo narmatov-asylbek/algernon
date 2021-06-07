@@ -6,7 +6,9 @@ from django.views.generic import View
 from django.contrib import messages
 
 from .forms import LoginForm, SettingsForm, ContactForm, CustomUserCreationForm
-from .models import Contact
+from books.models import Book, Library
+from .models import Contact, CustomUser
+
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -34,7 +36,7 @@ class LoginView(View):
             return render(request, 'account/login.html', {'form': form})
 
 
-class UserProfileUpdateView(LoginRequiredMixin, View):
+class UserSettingsUpdateView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         settings_form = SettingsForm(instance=request.user)
         contact_form = ContactForm(instance=request.user.contact)
@@ -42,7 +44,7 @@ class UserProfileUpdateView(LoginRequiredMixin, View):
             'settings_form': settings_form,
             'contact_form': contact_form,
         }
-        return render(request, 'account/profile_form.html', context)
+        return render(request, 'account/settings_form.html', context)
 
 
 @require_POST
@@ -51,9 +53,9 @@ def update_user_settings(request):
 
     if settings_form.is_valid():
         settings_form.save()
-        return redirect('account:profile')
+        return redirect('account:settings')
     messages.error(request, "Произошла ошибка")
-    return redirect('account:profile')
+    return redirect('account:settings')
 
 
 @require_POST
@@ -62,7 +64,7 @@ def update_user_contacts(request):
 
     if contact_form.is_valid():
         contact_form.save()
-    return redirect('account:profile')
+    return redirect('account:settings')
 
 
 class UserRegistrationView(View):
@@ -99,3 +101,26 @@ class UserLogoutView(View):
             logout(request)
             return redirect('/')
         return redirect('/')
+
+
+class ProfileInfoView(LoginRequiredMixin, View):
+    def get(self, request, slug):
+        user = CustomUser.objects.get(slug=slug)
+        context = {
+            'user': user,
+            'profile_active': True
+        }
+        return render(request, 'account/profile.html', context)
+
+
+class AccountLibraryView(View):
+    def get(self, request, slug):
+        user = CustomUser.objects.get(slug=slug)
+        library = Library.objects.get(user=user)
+
+        context = {
+            'library': library,
+            'user': user,
+            'lib_active': True
+        }
+        return render(request, 'books/book_library.html', context)
