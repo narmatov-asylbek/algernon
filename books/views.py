@@ -13,24 +13,25 @@ from chapters.models import Chapter
 from .forms import CycleForm, BookForm
 
 
-class BookList(ListView):
+class ShowCaseBookList(ListView):
     template_name = 'homepage.html'
     context_object_name = 'books'
     model = Book
 
     def get_queryset(self, *args, **kwargs):
-        try:
-            slug = self.kwargs['slug']
-            genre = get_object_or_404(Genre, slug=slug)
-            books = Book.objects.filter(genre=genre)
-        except:
-            books = Book.objects.all()
+        books = Book.objects.all()
         return books
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['genres'] = Genre.objects.filter(is_important=True)[:3]
         return context
+
+
+class BookListView(ListView):
+    model = Book
+    template_name = 'books/book_list.html'
+    context_object_name = 'book_list'
 
 
 class BookDetailView(View):
@@ -47,24 +48,6 @@ class BookDetailView(View):
         }
         return render(request, 'books/book_detail.html', context)
 
-    def post(self, request, id):
-        book = get_object_or_404(Book, id=id)
-        author = request.user
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.cleaned_data.get('comment_text')
-            reply_obj = None
-            try:
-                reply_id = int(request.POST.get('reply_id'))
-            except:
-                reply_id = None
-            if reply_id:
-                reply_obj = Comment.objects.get(id=reply_id)
-            if reply_obj:
-                Comment.objects.create(book=book, user=author, parent=reply_obj, comment_text=comment)
-            else:
-                Comment.objects.create(book=book, user=author, comment_text=comment)
-            return redirect(reverse('books:detail', args=[book.id]))
 
 
 class AddBookView(LoginRequiredMixin, View):
@@ -74,7 +57,7 @@ class AddBookView(LoginRequiredMixin, View):
         context = {
             'form': form
         }
-        return render(request, 'authors/books/book_form.html', context)
+        return render(request, 'books/book_form.html', context)
 
     def post(self, request, *args, **kwargs):
         form = BookForm(request.POST, request.FILES)
@@ -99,7 +82,7 @@ class UpdateBookSettings(LoginRequiredMixin, View):
             'active': True
         }
 
-        return render(request, 'authors/books/update_book_form.html', context)
+        return render(request, 'books/update_book_form.html', context)
 
     def post(self, request, pk, *args, **kwargs):
         book = get_object_or_404(Book, pk=pk)
@@ -119,7 +102,8 @@ class UpdateBookTextView(View):
         context = {
             'book': book
         }
-        return render(request, 'authors/books/update_book_text.html', context)
+        return render(request, 'books/update_book_text.html', context)
+
 
 class AddCycleView(View):
     def get(self, request, *args, **kwargs):
@@ -127,7 +111,7 @@ class AddCycleView(View):
         context = {
             'form': form
         }
-        return render(request, 'authors/books/cycle_form.html', context)
+        return render(request, 'books/cycle_form.html', context)
 
     def post(self, request, *args, **kwargs):
         form = CycleForm(request.POST)
@@ -140,11 +124,16 @@ class AddCycleView(View):
         return redirect('authors:authors_cycles')
 
 
-class DeleteCycleView(View):
-    def post(self, request, id):
-        cycle = get_object_or_404(Cycle, id=id, creator=request.user)
-        cycle.delete()
-        return JsonResponse({'success': True})
+
+@login_required
+@require_POST
+def delete_cycle(request, id):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        cycle = get_object_or_404(Cycle, id=id)
+        if cycle.creator == request.user:
+            cycle.delete()
+            return JsonResponse({'success': True, 'id': id}, status=200)
+        return JsonResponse({'success': True}, status=401)
 
 
 class EditCycleView(View):
@@ -155,7 +144,7 @@ class EditCycleView(View):
             'form': cycle_form,
             'cycle': cycle
         }
-        return render(request, 'authors/books/update_cycle_form.html', context)
+        return render(request, 'books/update_cycle_form.html', context)
 
     def post(self, request, id):
         cycle = get_object_or_404(Cycle, id=id, creator=request.user)
@@ -165,6 +154,7 @@ class EditCycleView(View):
             cycle_form.save()
             return JsonResponse({'success': True})
         return JsonResponse({'success': False})
+
 
 @require_POST
 @login_required
@@ -179,6 +169,7 @@ def add_to_library(request, book_id):
             library.books.add(book)
             message = "Added"
         return JsonResponse({'success': True, 'message': message})
+
 
 @require_POST
 @login_required

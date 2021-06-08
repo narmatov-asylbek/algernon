@@ -38,7 +38,7 @@
                                                 <strong>{{ book.title }}</strong>
                                             </a>
                                             <br>
-                                            <a href="" class="has-text-grey-dark">
+                                            <a href="{{ book.author.get_author_url }}" class="has-text-grey-dark">
                                                 {{ book.author.name }}
                                             </a>
                                         </p>

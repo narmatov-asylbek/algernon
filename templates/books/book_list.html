@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <div class="container section">
+        <div class="columns is-multiline box">
+            <h1 class="title is-4 has-text-info">Все книги</h1>
+            <div class="navbar-divider"></div>
+            {% for book in book_list %}
+                <div class="column is-12 mb-2" style="border-bottom: 1px solid #e1e8ed;}">
+                    <div class="columns">
+                        <div class="column is-2">
+                            <a href="{{ book.get_absolute_url }}">
+                                <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="is-146-204">
+                            </a>
+                        </div>
+                        <div class="column is-10 ml-2">
+                            <div class="book_title">
+                                <a href="{{ book.get_absolute_url }}" class="title is-6 has-text info">
+                                    {{ book.title }}
+                                </a>
+                            </div>
+                            <div class="book_author">
+                                <p><a href="{{ book.author.get_author_url }}" class="is-link">{{ book.author.name }}</a></p>
+                            </div>
+                            <div class="book_stats"></div>
+                            <div class="book_description">
+                                {{ book.description }}
+                            </div>
+                            <div class="is-grouped pt-5 is-pulled-right">
+                                <a href="{{ book.get_absolute_url }}" class="button is-link is-outlined">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

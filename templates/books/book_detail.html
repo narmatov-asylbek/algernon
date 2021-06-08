@@ -33,7 +33,8 @@
                         <div class="block">
                             <h1 class="title is-4">{{ book.title }}</h1>
                             <div class="block book-authors">
-                                <span class="authors"><a href="">{{ book.author.name }}</a></span>
+                                <span class="authors"><a
+                                        href="{{ book.author.get_author_url }}">{{ book.author.name }}</a></span>
                             </div>
                             <div class="block">
                                 <span class="button is-disable is-small mr-3" type="">
@@ -86,7 +87,7 @@
                     </div>
                 </div>
                 <div class="block">
-                    <form class="media" method="post">
+                    <form action="{% url 'comments:post_comment' book.id %}" class="media" method="post" id="comment_form">
                         {% csrf_token %}
                         <figure class="media-left">
                             <p class="image is-64x64">
@@ -107,10 +108,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="block">
+                <div class="block comments">
                     {% for comment in comments %}
-
-                        <div class="media">
+                        <div class="media comment-item">
                             <figure class="media-left">
                                 <p class="image is-64x64">
                                     <img class="is-128-128" src="{{ comment.user.get_image_url }}">
@@ -133,42 +133,61 @@
             </div>
         </div>
     </div>
-    {% block scripts %}
-
-        <script>
-            $('#add-to-lib').click(function () {
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'books:add_to_library' book.id %}",
-                    data: {'book_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.message === 'Added') {
-                            $('input#add-to-lib').val('Добавлено в библиотеку');
-                            $('input#add-to-lib').classList.add('is-primary')
-                        } else {
-                            $('input#add-to-lib').val('Добавить в библиотеку');
-                        }
-                    },
-                    error: function (rs, e) {
-                        alert("Ошибка");
-                    }
-                });
-            })
-            $('#add-like-to-book').click(function () {
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'books:add_like_to_book' book.id %}",
-                    data: {'book_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                    dataType: "json",
-                    success: function (response) {
-                        $("#like-count").text(response['likes']);
-                    },
-                    error: function (rs, e) {
-                        alert("Ошибка");
-                    }
-                });
-            })
-        </script>
-    {% endblock %}
 {% endblock content %}
+
+{% block scripts %}
+    <script>
+        document.getElementById("comment_form").onsubmit = function (e) {
+            e.preventDefault()
+            const comment_text = $('#comment_form textarea').val();
+            fetch(this.action, {
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                mode: 'same-origin',
+                body: JSON.stringify({'comment_text': comment_text})
+            }).then(function (response) {
+                return response.json()
+
+            }).then(function (data) {
+                alert('heel')
+            });
+        }
+        $('#add-to-lib').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'books:add_to_library' book.id %}",
+                data: {'book_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: "json",
+                success: function (response) {
+                    if (response.message === 'Added') {
+                        $('input#add-to-lib').val('Добавлено в библиотеку');
+                        $('input#add-to-lib').classList.add('is-primary')
+                    } else {
+                        $('input#add-to-lib').val('Добавить в библиотеку');
+                    }
+                },
+                error: function (rs, e) {
+                    alert("Ошибка");
+                }
+            });
+        })
+        $('#add-like-to-book').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'books:add_like_to_book' book.id %}",
+                data: {'book_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: "json",
+                success: function (response) {
+                    $("#like-count").text(response['likes']);
+                },
+                error: function (rs, e) {
+                    alert('Комментарий добавлен')
+                }
+            });
+        })
+    </script>
+{% endblock %}

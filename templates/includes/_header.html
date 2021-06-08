@@ -16,7 +16,7 @@
 
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{% url 'books:books' %}">
                         Книги
                     </a>
 
@@ -31,7 +31,7 @@
 
                         <div class="navbar-dropdown">
                             {% for genre in genres %}
-                                <a class="navbar-item" href="{% url 'books:book_list_by_genre' genre.slug %}">
+{#                                <a class="navbar-item" href="{% url 'books:book_list_by_genre' genre.slug %}">#}
                                     {{ genre.name }}
                                 </a>
                             {% endfor %}
@@ -46,8 +46,8 @@
                             {% if request.user.is_authenticated %}
                                 <div class="navbar-item has-dropdown is-hoverable">
                                 <a class="navbar-link button">
-                                    <img src="{{ request.user.get_image_url }}" alt="profile" class="is-32-32">
-{#                                    {{ request.user.name }}#}
+{#                                    <img src="{{ request.user.get_image_url }}" alt="profile" class="is-32-32">#}
+                                    {{ request.user.name }}
                                 </a>
 
                                 <div class="navbar-dropdown is-right">

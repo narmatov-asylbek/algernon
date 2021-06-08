@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.views.decorators.http import require_POST
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
+from django.http.response import JsonResponse
 from django.contrib import messages
 
 from .forms import LoginForm, SettingsForm, ContactForm, CustomUserCreationForm
@@ -81,6 +82,7 @@ class UserRegistrationView(View):
         if form.is_valid():
             user = form.save()
             Contact.objects.create(user=user)
+            Library.objects.get_or_create(user=user)
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=password)

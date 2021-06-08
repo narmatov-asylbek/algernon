@@ -8,6 +8,10 @@ body {
 .is-border-light-gray {
     border: 1px solid var(--gray-light-5)
 }
+.is-146-204 {
+    height: 204px !important;
+    width: 146px !important;
+}
 :root {
     --green: #47cf73;
     --green-light: #d3ffe1;

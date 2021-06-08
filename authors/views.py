@@ -1,15 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404, reverse
-from django.http.response import JsonResponse
 
 # Create your views here.
-from django.views.generic import ListView, UpdateView
-from django.views.generic import View
+from django.views.generic import ListView, DetailView
 from books.models import Book, Cycle
-from books.forms import BookForm, CycleForm
+from django.contrib.auth.views import get_user_model
 
 
-class AuthorsBookList(LoginRequiredMixin, ListView):
+class AuthorsCreatedBookList(LoginRequiredMixin, ListView):
     template_name = 'authors/created_books.html'
     model = Book
     context_object_name = 'books'
@@ -24,10 +21,9 @@ class AuthorsBookList(LoginRequiredMixin, ListView):
         return context
 
 
-
 class AuthorsCycleList(ListView):
     model = Cycle
-    template_name = 'authors/books/created_cycles.html'
+    template_name = 'books/created_cycles.html'
     context_object_name = 'cycles'
 
     def get_queryset(self):
@@ -35,3 +31,12 @@ class AuthorsCycleList(ListView):
         return queryset
 
 
+class AuthorDetailView(DetailView):
+    model = get_user_model()
+    template_name = 'authors/detail.html'
+    context_object_name = 'author'
+
+    def get_context_data(self, **kwargs):
+        context = super(AuthorDetailView, self).get_context_data(**kwargs)
+        context['books'] = Book.objects.filter(author_id=kwargs.get('id'))
+        return context

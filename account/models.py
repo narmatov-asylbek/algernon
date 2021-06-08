@@ -56,6 +56,9 @@ class CustomUser(AbstractUser):
     def get_account_lib_url(self):
         return reverse('account:library', args=[self.slug])
 
+    def get_author_url(self):
+        return reverse('authors:author_detail', args=[self.pk])
+
     def get_image_url(self):
         if not self.image:
             return None

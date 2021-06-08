@@ -10,11 +10,13 @@
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
+  <script src="{% static 'js/csrf_token.js' %}"></script>
+
 {% include 'includes/_header.html' %}
 <div class="container pt-6">
     <div class="columns">
         {% include 'includes/_sidebar.html' %}
-        <div class="column is-10 box">
+        <div class="column is-9 box">
             <div class="columns is-centered">
                 <div class="column is-12">
                     {% block content %}
@@ -26,6 +28,10 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="{% static 'js/book_settings.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+{% block script %}
+
+{% endblock script %}
 </body>
 </html>

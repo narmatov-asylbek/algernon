@@ -1,0 +1,9 @@
+asgiref==3.3.4
+Django==3.2.3
+django-filter==2.4.0
+django-quill-editor==0.1.22
+Pillow==8.2.0
+pkg-resources==0.0.0
+pytils==0.3
+pytz==2021.1
+sqlparse==0.4.1

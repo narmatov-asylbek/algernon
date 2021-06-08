@@ -25,7 +25,7 @@ class BookForm(forms.ModelForm):
         }
         widgets = {
             'cover': forms.FileInput(attrs={
-                'class': "button"
+                'class': "input"
             }),
             'title': forms.TextInput(attrs={
                 'class': 'input'
