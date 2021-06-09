@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from .models import Contact, CustomUser
 
@@ -85,3 +86,9 @@ class CustomUserCreationForm(UserCreationForm):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'input'
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if CustomUser.objects.filter(name=name).exists():
+            raise ValidationError('Данное имя пользователя уже занято')
+        return name

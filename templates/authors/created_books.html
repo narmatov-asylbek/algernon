@@ -32,24 +32,34 @@
                             </div>
                             <nav class="level is-mobile">
                                 <div class="level-left">
-                                    <a class="level-item ml-1">
-                                        <span class="icon is-small"><i class="far fa-eye"></i></span>
-                                    </a>
-                                    <a class="level-item ml-1">
-                                        <span class="icon is-small"><i class="fas fa-book-reader"></i></span>
-                                    </a>
-                                    <a class="level-item ml-1">
-
-
-                                    </a>
-                                    <a class="level-item ml-1">
+                                    <a class="level-item ml-2">
                                         <span class="icon is-small">
-                                            <i class="fas fa-comments"></i> <strong
-                                                class="ml-1">{{ book.get_comment_count }}</strong>
+                                            <i class="far fa-eye"></i>
+                                            <strong class="ml-1">{{ book.get_views_count }}</strong>
+                                        </span>
+                                    </a>
+                                    <a class="level-item ml-2">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-heart"></i>
+                                        <strong class="ml-1" id="like-count">{{ book.get_likes_count }}</strong>
+                                    </span>
+                                    </a>
+                                    <a class="level-item ml-2">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-book-reader"></i>
+                                            <strong class="ml-1">{{ book.get_readers_count }}</strong>
+                                        </span>
+                                    </a>
+                                    <a class="level-item ml-2">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-comments"></i>
+                                            <strong class="ml-1">{{ book.get_comment_count }}</strong>
                                         </span>
                                     </a>
                                     <a class="level-item ml-1">
-                                        <span class="icon is-small"><i class="fas fa-pen-nib"></i></span>
+                                        <span class="icon is-small">
+                                            <i class="fas fa-pen-nib"></i>
+                                        </span>
                                     </a>
                                 </div>
                             </nav>
@@ -100,3 +110,7 @@
     </section>
 
 {% endblock content %}
+
+{% block script %}
+    <script></script>
+{% endblock %}

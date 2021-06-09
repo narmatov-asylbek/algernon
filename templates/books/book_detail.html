@@ -38,7 +38,8 @@
                             </div>
                             <div class="block">
                                 <span class="button is-disable is-small mr-3" type="">
-                                <span class="icon is-small mr-4"><i class="far fa-eye mr-1"></i></span>
+                                <span class="icon is-small"><i class="far fa-eye mr-1"></i></span>
+                                    <span class="ml-2">{{ book.get_views_count }}</span>
                                 </span>
                                 <button id="add-like-to-book" class="button is-small">
                                     <span class="icon is-small"><i class="fas fa-heart mr-1"></i></span>
@@ -185,7 +186,7 @@
                     $("#like-count").text(response['likes']);
                 },
                 error: function (rs, e) {
-                    alert('Комментарий добавлен')
+                    alert("Ошибка");
                 }
             });
         })

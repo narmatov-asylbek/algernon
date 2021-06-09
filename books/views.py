@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.db.models import F
 
 from comments.forms import CommentForm
 from .models import Genre, Book, Cycle, Library, Like
@@ -37,6 +38,7 @@ class BookListView(ListView):
 class BookDetailView(View):
     def get(self, request, id):
         book = get_object_or_404(Book, id=id)
+        Book.objects.filter(id=id).update(views=F("views") + 1)
         chapters = Chapter.objects.filter(book=book)
         comments = Comment.objects.filter(book=book)
         comment_form = CommentForm()
@@ -47,7 +49,6 @@ class BookDetailView(View):
             'comment_form': comment_form
         }
         return render(request, 'books/book_detail.html', context)
-
 
 
 class AddBookView(LoginRequiredMixin, View):
@@ -89,11 +90,9 @@ class UpdateBookSettings(LoginRequiredMixin, View):
         if book.author != request.user:
             return redirect(reverse('books:detail', args=[book.id]))
         form = BookForm(request.POST, request.FILES, instance=book)
-        print(form.is_valid())
         if form.is_valid():
             form.save()
-            return JsonResponse({'success': True})
-        return JsonResponse({'success': False})
+        return redirect(reverse('books:update_book', args=[book.id]))
 
 
 class UpdateBookTextView(View):
@@ -103,6 +102,13 @@ class UpdateBookTextView(View):
             'book': book
         }
         return render(request, 'books/update_book_text.html', context)
+
+
+class DeleteCycleView(LoginRequiredMixin, View):
+    def post(self, request, book_id):
+        book = get_object_or_404(Book, author=request.user, id=book_id)
+        book.delete()
+        return redirect(reverse('authors:author_books'))
 
 
 class AddCycleView(View):

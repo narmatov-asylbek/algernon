@@ -24,7 +24,7 @@ class Chapter(models.Model):
     )
     title = models.CharField(max_length=200)
     text = QuillField(max_length=200000)
-    status = models.CharField(max_length=2, choices=STATUS, default='D')
+    status = models.CharField(max_length=2, choices=STATUS, default='D', blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -53,3 +53,9 @@ class Chapter(models.Model):
         if self.status == 'D':
             return 'Не опубликовано'
         return 'Опубликовано'
+
+    def get_chapter_update_url(self):
+        return reverse('chapters:edit_chapter', args=[self.book.id, self.id])
+
+    def get_chapter_delete_url(self):
+        return reverse('chapters:delete_chapter', args=[self.book.id, self.id])

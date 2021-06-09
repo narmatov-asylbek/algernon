@@ -13,7 +13,7 @@
         <li><a href="{% url 'books:update_book_content' book.id %}">Текст</a></li>
       </ul>
     </div>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{% url 'books:update_book' book.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="file has-name">
             <label class="file-label">
@@ -102,7 +102,6 @@
                 </div>
             </div>
         </div>
-
         <div class="control">
             <button type="submit" class="button is-success is-outlined is-medium">Сохранить</button>
         </div>

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 from django.conf import settings
+from django.db.models import F
 
 from django_quill.fields import QuillField
 from pytils.translit import slugify
@@ -122,6 +123,7 @@ class Book(models.Model):
     can_comment = models.CharField(max_length=2, choices=BOOK_CHOICES, default="N")
     can_read = models.CharField(max_length=2, choices=BOOK_CHOICES, default="N")
     can_download = models.CharField(max_length=2, choices=BOOK_CHOICES, default="N")
+    views = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -149,6 +151,7 @@ class Book(models.Model):
 
     def get_comment_count(self):
         return len([comment for comment in self.comments.all()])
+
     # TODO: Remove this method
     def get_can_download_options(self):
         if self.can_download == "A":
@@ -162,6 +165,13 @@ class Book(models.Model):
     def get_likes_count(self):
         return Like.objects.filter(book=self).count()
 
+    @property
+    def get_views_count(self):
+        return self.views
+
+    @property
+    def get_readers_count(self):
+        return self.library_books.count()
 
 class Library(models.Model):
     READING = "R"

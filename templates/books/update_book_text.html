@@ -5,6 +5,48 @@
 {% endblock title %}
 
 {% block content %}
+    <div class="modal" id="confirm-delete-modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <div class="columns is-centered">
+                    <div class="column is-8 p-3">
+                        <p class="is-size-6 has-text-centered">Вы уверены что хотите удалить эту книгу?</p>
+                        <div class="is-grouped is-flex is-justify-content-space-between mt-3">
+                            <button class="button is-info is-small modal-close-button">
+                                Отмена
+                            </button>
+                            <form action="{% url 'books:delete_book' book.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="button  is-danger is-outlined is-small" id="delete-book-button">
+                                    Подтвердить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large modal-close-button" aria-label="close"></button>
+    </div>
+
+    <div class="modal" id="chapter-modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <div class="columns is-centered">
+                    <div class="column is-8 p-3 has-text-centered is-centered p-5">
+                        <p class="has-size-6 has-text-info has-text-centered">
+                            Вы удалили одну из частей вашей книги
+                        </p>
+                        <button class=" mt-3 button button is-success chapter-modal-close-button">Хорошо</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large chapter-modal-close-button" aria-label="close"></button>
+    </div>
+
     <section class="section">
         <h1 class="title is-4">{{ book.title }}</h1>
         <div class="tabs">
@@ -26,7 +68,9 @@
             <div class="is-grouped">
                 <a href="" class="button is-success">Изменить статус на "завершено"</a>
                 <a href="" class="button is-warning ml-4">Ознакомительный фрагмент</a>
-                <a href="" class="button is-danger is-outlined is-pulled-right">Удалить</a>
+                <button type="button" href="" class="button is-danger is-outlined is-pulled-right"
+                        id="confirm-delete-button">Удалить
+                </button>
             </div>
         </div>
         <div class="block">
@@ -34,7 +78,7 @@
         </div>
         <div class="columns is-multiline">
             {% for chapter in book.chapters.all %}
-                <div class="column is-12 mt-2">
+                <div class="column is-12 mt-2" id="chapter_{{ chapter.id }}">
                     <div class="columns">
                         <div class="column is-4">
                             <p><b>{{ chapter.title }}</b></p>
@@ -44,11 +88,13 @@
                             <span class="ml-1">({{ chapter.get_chapter_len }} знаков)</span>
                         </div>
                         <div class="column is-grouped is-4 has-text-right chapter-buttons">
-                            <a href="{% url 'chapters:edit_chapter' chapter.id %}" class="button is-small"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="{{ chapter.get_chapter_update_url }}" class="button is-small"><i
+                                    class="fas fa-pencil-alt"></i></a>
                             <a href="" class="button is-small"><i class="fas fa-book-open"></i></a>
                             <a href="" class="button is-small"><i class="far fa-eye"></i></a>
-                            <a href="" class="button is-small is-danger is-outlined"><i
-                                    class="fas fa-trash-alt"></i></a>
+                            <button type="button" data-url="{{ chapter.get_chapter_delete_url }}"
+                                    class="button is-small is-danger is-outlined" id="delete_chapter_button">
+                                <i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 </div>
@@ -56,3 +102,49 @@
         </div>
     </section>
 {% endblock content %}
+
+{% block script %}
+    <script>
+        const modal = document.getElementById("confirm-delete-modal")
+        const confirmButton = document.getElementById("confirm-delete-button")
+        confirmButton.onclick = () => {
+            modal.classList.add('is-active')
+        }
+
+        const modalCloseButtons = document.getElementsByClassName('modal-close-button')
+        for (let element = 0; element < modalCloseButtons.length; element++) {
+            modalCloseButtons[element].onclick = () => {
+                modal.classList.remove('is-active')
+            }
+        }
+        const chapterModal = document.getElementById("chapter-modal")
+        const chapterDeleteButton = document.getElementById("delete_chapter_button")
+        if (chapterDeleteButton != null) {
+            chapterDeleteButton.onclick = function () {
+                fetch(this.dataset.url, {
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                    },
+                    method: 'POST',
+                    mode: 'same-origin'
+                }).then(function (response) {
+                    return response.json()
+
+                }).then(function (data) {
+                    let chapter = document.getElementById('chapter_' + data.id)
+                    chapter.parentNode.removeChild(chapter)
+                    chapterModal.classList.add('is-active')
+                });
+            }
+        }
+
+        const chapterCloseButton = document.getElementsByClassName('chapter-modal-close-button')
+        for (let element = 0; element < chapterCloseButton.length; element++) {
+            chapterCloseButton[element].onclick = () => {
+                chapterModal.classList.remove('is-active')
+            }
+        }
+    </script>
+{% endblock script %}
