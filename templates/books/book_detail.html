@@ -76,7 +76,11 @@
                     <div class="author-img"><img src="{{ book.author.get_image_url }}" alt=""></div>
                     <div class="block"></div>
                     <div class="block">
-                        <input type="submit" value="Подписаться" class="button is-primary is-fullwidth" id="add-to-lib">
+                        {% if request.user.is_authenticated %}
+                        <button type="button" class="button is-primary is-fullwidth" id="send-friend-request">
+                        Подписаться
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -199,5 +203,24 @@
                 }
             });
         })
+
+        sendFriendRequestButton = document.getElementById("send-friend-request")
+        sendFriendRequestButton.onclick = (e) => {
+            e.preventDefault()
+                fetch("{% url 'account:send_friend_request' book.author.id %}", {
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                mode: 'same-origin',
+            }).then(function (response) {
+                return response.json()
+
+            }).then(function (data) {
+                alert(data.message)
+            });
+        }
     </script>
 {% endblock %}

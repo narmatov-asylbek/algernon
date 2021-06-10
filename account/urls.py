@@ -13,4 +13,9 @@ urlpatterns = [
 
     path('change-settings/', views.update_user_settings, name='update_settings'),
     path('change-contacts/', views.update_user_contacts, name='update_contacts'),
+
+    path('friends/send/<int:user_id>/', views.send_friend_request, name='send_friend_request'),
+    path('friends/add/<int:request_id>/', views.accept_friend_request, name='accept_friends'),
+    path('subscribers/', views.AccountSubscribersList.as_view(), name='subscriber_list')
 ]
+

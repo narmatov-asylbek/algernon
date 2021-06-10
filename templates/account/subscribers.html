@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Основная информация
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 pt-5">
+        <div class="columns">
+            {% include 'includes/profile_menu.html' %}
+            <div class="column is-9 ml-3 box">
+                <div class="block">
+                    <p class="title is-6 is-pulled-left">
+                        Подписчики
+                    </p>
+                </div>
+                <div class="navbar-divider" data-content="OR"></div>
+
+                <div class="columns is-multiline">
+                    {% for subscriber in request.user.get_subscribers %}
+                        <div class="column is-6 is-border-light-gray m-2">
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <a href="{{ subscriber.from_user.get_author_url }}">
+                                        <figure class=" image is-128x128">
+                                            <img src="{{ subscriber.from_user.get_image_url }}" alt="" class="">
+                                        </figure>
+                                    </a>
+                                </div>
+                                <div class="column is-8 is-flex is-flex-direction-column is-justify-content-center">
+                                    <div class="name has-text-centered p-2">
+                                        <a href="{{ subscriber.from_user.get_author_url }}"
+                                           class="has-text-centered">{{ subscriber.from_user.name }}</a>
+                                    </div>
+                                    <button data-url="{% url 'account:accept_friends' subscriber.id %}"
+                                            class="button is-success is-outlined is-small" id="accept-friend-button">
+                                        Добавить в друзья</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        acceptFriendButton = document.getElementById("accept-friend-button")
+        if (acceptFriendButton != null) {
+        acceptFriendButton.onclick = (e) => {
+            e.preventDefault()
+            fetch(acceptFriendButton.dataset.url, {
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                mode: 'same-origin',
+            }).then(function (response) {
+                return response.json()
+
+            }).then(function (data) {
+                alert(data.message)
+            });
+        }
+        }
+    </script>
+{% endblock %}

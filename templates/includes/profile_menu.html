@@ -14,7 +14,7 @@
   <ul class="menu-list">
     <li><a>Друзья</a></li>
     <li>
-      <a class="">Подписчики</a>
+      <a class="{% if is_subscribers_active %}is-active{% endif %}" href="{% url 'account:subscriber_list' %}">Подписчики</a>
     </li>
     <li>
       <a class="">Комментарии</a>

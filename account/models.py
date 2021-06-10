@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+
 from pytils.translit import slugify
 from django_quill.fields import QuillField
 
@@ -38,6 +39,8 @@ class CustomUser(AbstractUser):
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, default=DS)
     information = QuillField(max_length=1000, null=True, blank=True)
 
+    friends = models.ManyToManyField("CustomUser", blank=True)
+
     def __str__(self):
         return self.email
 
@@ -64,6 +67,12 @@ class CustomUser(AbstractUser):
             return None
         return self.image.url
 
+    def get_subscribers(self):
+        return Friend.objects.filter(to_user=self)
+
+    def get_followings(self):
+        return Friend.objects.filter(from_user=self)
+
 
 class Contact(models.Model):
     user = models.OneToOneField(
@@ -82,3 +91,17 @@ class Contact(models.Model):
         return self.user.email
 
 
+class Friend(models.Model):
+    from_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='from_users'
+    )
+    to_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='to_users'
+    )
+
+    def __str__(self):
+        return "From %s to %s" % (self.from_user.name, self.to_user.name)

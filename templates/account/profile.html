@@ -25,17 +25,29 @@
                     <div class="column is-12 box">
                         <p>Друзья</p>
                         <div class="navbar-divider"></div>
-                        <div class="block"></div>
+                        <div class="block">
+                             {% for friend in user.friends.all %}
+                                 <a href="{{ friend.get_author_url }}">{{ friend.name }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="column is-12 box">
                         <p>Подписчики</p>
                         <div class="navbar-divider"></div>
-                        <div class="block"></div>
+                        <div class="block">
+                            {% for subscriber in user.get_subscribers %}
+                                <a href="{{ subscriber.from_user.get_author_url }}">{{ subscriber.from_user.name }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="column is-12 box">
                         <p>Подписки</p>
                         <div class="navbar-divider"></div>
-                        <div class="block"></div>
+                        <div class="block">
+                            {% for following in user.get_followings %}
+                                <a href="{{ following.to_user.get_author_url }}">{{ following.to_user.name }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

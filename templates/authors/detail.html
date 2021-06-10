@@ -20,19 +20,31 @@
             <div class="column is-3 ml-3">
                 <div class="columns is-multiline">
                     <div class="column is-12 box">
-                        <p>Друзья</p>
+                        <a href="">Друзья</a>
                         <div class="navbar-divider"></div>
-                        <div class="block"></div>
+                        <div class="block">
+                             {% for friend in author.friends.all %}
+                                 <a href="{{ friend.get_author_url }}">{{ friend.name }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="column is-12 box">
-                        <p>Подписчики</p>
+                        <a href="{% url 'account:subscriber_list' %}">Подписчики</a>
                         <div class="navbar-divider"></div>
-                        <div class="block"></div>
+                        <div class="block">
+                            {% for subscriber in author.get_subscribers %}
+                                <a href="{{ subscriber.from_user.get_author_url }}">{{ subscriber.from_user.name }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="column is-12 box">
-                        <p>Подписки</p>
+                        <a href="">Подписки</a>
                         <div class="navbar-divider"></div>
-                        <div class="block"></div>
+                        <div class="block">
+                            {% for following in author.get_followings %}
+                                <a href="{{ following.to_user.get_author_url }}">{{ following.to_user.name }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
