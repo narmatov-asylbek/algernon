@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Основная информация
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 pt-5">
+        <div class="columns">
+            {% include 'includes/profile_menu.html' %}
+            <div class="column is-9 ml-3 box">
+                <div class="block">
+                    <p class="title is-6 is-pulled-left">
+                        Друзья
+                    </p>
+                </div>
+                <div class="navbar-divider" data-content="OR"></div>
+
+                <div class="columns is-multiline">
+                    {% for friend in request.user.friends.all %}
+                        <div class="column is-6 is-border-light-gray m-2">
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <a href="{{ friend.get_author_url }}">
+                                        <figure class=" image is-128x128">
+                                            <img src="{{ friend.get_image_url }}" alt="" class="">
+                                        </figure>
+                                    </a>
+                                </div>
+                                <div class="column is-8 is-flex is-flex-direction-column is-justify-content-center">
+                                    <div class="name has-text-centered p-2">
+                                        <a href="{{ friend.get_author_url }}"
+                                           class="has-text-centered">{{ friend.name }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
