@@ -113,7 +113,7 @@ class Book(models.Model):
     )
     cycle = models.ForeignKey(
         Cycle,
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="books",

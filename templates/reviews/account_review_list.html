@@ -18,12 +18,17 @@
                             <a href="{{review.get_absolute_url}}"
                                class="is-size-4 has-text-info">Рецензия на книгу "{{ review.book.title }}"</a>
                         </div>
-                        <div class="field is-grouped mt-5 p-2">
-                            <p class="control is-pulled-right">
-                                <a href="{{ review.get_absolute_url }}"
-                                        class="button is-link">
+                        <div class="field is-grouped mt-5 is-flex is-justify-content-space-between">
+                            <p class="control is-pulled-left">
+                                <a href="{{review.get_absolute_url}}" class="button is-link">
                                     Подробнее
                                 </a>
+                            </p>
+                            <p class="control is-pulled-right">
+                                <button type="button" data-url="{% url 'reviews:delete_review' review.id %}"
+                                        class="button is-danger delete-review-button" >
+                                    Удалить
+                                </button>
                             </p>
                         </div>
                     </div>
@@ -35,7 +40,6 @@
                                     <h4 class="title is-4 p-5">Вы пока не написали ни одной рецензии</h4>
                                     <a class="button is-link is-outlined is-medium" href="/">Вернуться на главное меню</a>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -46,3 +50,28 @@
     </section>
 
 {% endblock content %}
+
+{% block script %}
+    <script>
+        buttons = document.getElementsByClassName("delete-review-button")
+        for (let i=0; i< buttons.length; ++i) {
+        buttons[i].onclick = () => {
+            fetch(buttons[i].dataset.url, {
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                mode: 'same-origin'
+            }).then(function (response) {
+                return response.json()
+
+            }).then(function (data) {
+
+                let review = document.getElementById('review_'+data.id)
+                review.parentNode.removeChild(review)
+            });
+        }}
+    </script>
+{% endblock %}

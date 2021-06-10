@@ -1,6 +1,7 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.views.decorators.http import require_POST
 
 from books.models import Book
 from .models import Review
@@ -31,7 +32,7 @@ def create_review(request, book_id):
 def review_list(request, book_id):
     if request.method == 'GET':
         book = get_object_or_404(Book, id=book_id)
-        reviews = get_list_or_404(Review, book=book)
+        reviews = Review.objects.filter(book=book)
         context = {
             'book': book,
             'reviews': reviews
@@ -53,8 +54,19 @@ def review_detail(request, book_id, review_id):
 @login_required
 def account_review_list(request):
     if request.method == 'GET':
-        reviews = get_list_or_404(Review, author=request.user)
+        reviews = Review.objects.filter(author=request.user)
         context = {
             'reviews': reviews
         }
         return render(request, 'reviews/account_review_list.html', context)
+
+
+@login_required
+@require_POST
+def delete_review(request, id):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        review = get_object_or_404(Review, id=id)
+        if review.author == request.user:
+            review.delete()
+            return JsonResponse({'success': True, 'id': id}, status=200)
+        return JsonResponse({'success': True}, status=401)

@@ -29,7 +29,7 @@
                             </p>
                             <p class="control is-pulled-right">
                                 <button type="submit" data-url="{% url 'books:delete_cycle' cycle.id %}"
-                                        class="button is-danger" id="delete_cycle_button">
+                                        class="button is-danger delete-cycle-button">
                                     Удалить
                                 </button>
                             </p>
@@ -56,10 +56,10 @@
 {% endblock content %}
 {% block script %}
     <script>
-        let button = document.getElementById('delete_cycle_button')
-        if (button != null) {
-        button.onclick = function () {
-            fetch(this.dataset.url, {
+        buttons = document.getElementsByClassName("delete-cycle-button")
+        for (let i=0; i< buttons.length; ++i) {
+        buttons[i].onclick = () => {
+            fetch(buttons[i].dataset.url, {
                 headers: {
                     'X-CSRFToken': csrftoken,
                     'X-Requested-With': 'XMLHttpRequest',
