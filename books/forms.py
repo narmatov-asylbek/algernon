@@ -64,12 +64,12 @@ class BookForm(forms.ModelForm):
 class CycleForm(forms.ModelForm):
     class Meta:
         model = Cycle
-        fields = ['name', 'desciption', 'is_finished']
+        fields = ['name', 'description', 'is_finished']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control input'
             }),
-            'desciption': forms.Textarea(attrs={
+            'description': forms.Textarea(attrs={
                 'class': 'form-control textarea',
                 'cols': '20',
                 'rows': '6'

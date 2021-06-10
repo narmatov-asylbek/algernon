@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from django.views.generic import View, ListView
+from django.views.generic import View, ListView, DetailView
 from django.http.response import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
@@ -23,16 +23,27 @@ class ShowCaseBookList(ListView):
         books = Book.objects.all()
         return books
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['genres'] = Genre.objects.filter(is_important=True)[:3]
-        return context
-
 
 class BookListView(ListView):
     model = Book
     template_name = 'books/book_list.html'
     context_object_name = 'book_list'
+
+
+class BookListByGenreView(ListView):
+    model = Book
+    template_name = 'books/book_list.html'
+    context_object_name = 'book_list'
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = Book.objects.all().filter(genre__slug=self.kwargs.get('slug'))
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(BookListByGenreView, self).get_context_data(**kwargs)
+        context['listed_by_genre'] = True
+        context['genre'] = Genre.objects.get(slug=self.kwargs.get('slug'))
+        return context
 
 
 class BookDetailView(View):
@@ -130,7 +141,6 @@ class AddCycleView(View):
         return redirect('authors:authors_cycles')
 
 
-
 @login_required
 @require_POST
 def delete_cycle(request, id):
@@ -160,6 +170,12 @@ class EditCycleView(View):
             cycle_form.save()
             return JsonResponse({'success': True})
         return JsonResponse({'success': False})
+
+
+class CycleDetailView(DetailView):
+    model = Cycle
+    template_name = 'books/cycle_detail.html'
+    context_object_name = 'cycle'
 
 
 @require_POST

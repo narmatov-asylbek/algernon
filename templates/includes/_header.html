@@ -31,9 +31,8 @@
 
                         <div class="navbar-dropdown">
                             {% for genre in genres %}
-{#                                <a class="navbar-item" href="{% url 'books:book_list_by_genre' genre.slug %}">#}
-                                    {{ genre.name }}
-                                </a>
+                                <a href="{{ genre.get_absolute_url }}" class="navbar-item">{{ genre.name }}</a>
+
                             {% endfor %}
                         </div>
                     </div>

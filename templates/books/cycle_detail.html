@@ -1,19 +1,23 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ block.super }}
-{% endblock %}
+{{ cycle.name }}
+{% endblock title %}
+
 
 {% block content %}
     <div class="container section">
+        <div class="columns box mb-5">
+            <div class="column">
+                <div class="block"><h1 class="title is-4 has-text-info">{{ cycle.name }}</h1></div>
+                <div class="block"><a href="{{ cycle.creator.get_author_url }}">{{ cycle.creator.name }}</a></div>
+                <div class="block">{{ cycle.description }}</div>
+            </div>
+        </div>
         <div class="columns is-multiline box">
-            {% if listed_by_genre %}
-                <h1 class="title is-4 has-text-info">Все книги в жанре {{ genre.name }}</h1>
-                {% else %}
-                <h1 class="title is-4 has-text-info">Все книги</h1>
-            {% endif %}
+        <h2 class="is-size-4 has-text-info">Содержание цикла</h2>
             <div class="navbar-divider"></div>
-            {% for book in book_list %}
+            {% for book in cycle.books.all %}
                 <div class="column is-12 mb-2" style="border-bottom: 1px solid #e1e8ed;}">
                     <div class="columns">
                         <div class="column is-2">
@@ -43,4 +47,4 @@
             {% endfor %}
         </div>
     </div>
-{% endblock %}
+{% endblock content %}

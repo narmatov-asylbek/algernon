@@ -17,9 +17,9 @@
             </div>
             <div class="field">
                 <label class="label"
-                       for="{{ form.desciption.id_for_label }}">{{ form.desciption.label }}</label>
+                       for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
                 <div class="control">
-                    {{ form.desciption }}
+                    {{ form.description }}
                 </div>
             </div>
             <div class="field">
@@ -34,5 +34,42 @@
                 <button type="submit" class="button is-success is-medium is-outlined">Сохранить</button>
             </div>
         </form>
+    </section>
+
+    <section>
+        <h4 class="title is-4 has-text-info">Содержание цикла</h4>
+        <div class="columns is-multiline">
+            {% for book in cycle.books.all %}
+                <div class="column is-border-light-gray m-2 is-12">
+                    <div class="columns">
+                        <div class="column is-2">
+                            <a href="{{ book.get_absolute_url }}">
+                                <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="is-146-204">
+                            </a>
+                        </div>
+                        <div class="column is-10 ml-2">
+                            <div class="book_title">
+                                <a href="{{ book.get_absolute_url }}" class="title is-6 has-text info">
+                                    {{ book.title }}
+                                </a>
+                            </div>
+                            <div class="book_author">
+                                <p><a href="{{ book.author.get_author_url }}" class="is-link">{{ book.author.name }}</a></p>
+                            </div>
+                            <div class="book_stats"></div>
+                            <div class="book_description">
+                                {{ book.description }}
+                            </div>
+                            <div class="is-grouped p-5">
+                                <button class="button is-danger is-outlined is-pulled-left">Удалить из цикла</button>
+                                <a href="{{ book.get_absolute_url }}" class="button is-link is-outlined is-pulled-right">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+        </div>
     </section>
 {% endblock content %}

@@ -36,6 +36,15 @@
                                 <span class="authors"><a
                                         href="{{ book.author.get_author_url }}">{{ book.author.name }}</a></span>
                             </div>
+                            <div class="book-cycle block has-text-dark">
+                                <span>Цикл:
+                                    {% if book.cycle %}
+                                    <a href="{{ book.cycle.get_absolute_url }}" class="has-text-grey	">{{ book.get_book_cycle }}</a>
+                                        {% else %}
+                                        <b>Без цикла</b>
+                                    {% endif %}
+                                </span>
+                            </div>
                             <div class="block">
                                 <span class="button is-disable is-small mr-3" type="">
                                 <span class="icon is-small"><i class="far fa-eye mr-1"></i></span>

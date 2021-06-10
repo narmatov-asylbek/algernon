@@ -1,7 +1,8 @@
 from django.urls import path
 
 from .views import (ShowCaseBookList, BookDetailView, AddBookView, UpdateBookTextView,
-                    UpdateBookSettings, AddCycleView, EditCycleView, BookListView, DeleteCycleView)
+                    UpdateBookSettings, AddCycleView, EditCycleView, BookListView,
+                    DeleteCycleView, CycleDetailView, BookListByGenreView)
 from .views import add_to_library, add_like_to_book, delete_cycle
 
 app_name = 'books'
@@ -13,6 +14,8 @@ urlpatterns = [
     path('book/<int:book_id>/like/', add_like_to_book, name='add_like_to_book'),
     path('', ShowCaseBookList.as_view(), name="homepage"),
 
+    path('work/genre/<slug:slug>/', BookListByGenreView.as_view(), name='books_by_genre'),
+    path('work/series/<int:pk>', CycleDetailView.as_view(), name='cycle_detail'),
     path('new/', AddBookView.as_view(), name='new_book'),
     path('work/<int:pk>/edit/', UpdateBookSettings.as_view(), name='update_book'),
     path('work/<int:id>/edit/content/', UpdateBookTextView.as_view(), name='update_book_content'),

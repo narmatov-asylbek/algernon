@@ -19,7 +19,8 @@ class Cycle(models.Model):
         unique=True,
         verbose_name=_("Book Cycle Name")
     )
-    desciption = models.TextField(max_length=1000, null=True, blank=True)
+
+    description = models.TextField(max_length=1000, null=True, blank=True)
     is_finished = models.BooleanField(default=False)
 
     class Meta:
@@ -28,6 +29,9 @@ class Cycle(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('books:cycle_detail', args=[self.id])
 
 
 class Type(models.Model):
@@ -65,6 +69,9 @@ class Genre(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('books:books_by_genre', args=[self.slug])
 
 
 class Book(models.Model):
@@ -172,6 +179,12 @@ class Book(models.Model):
     @property
     def get_readers_count(self):
         return self.library_books.count()
+
+    def get_book_cycle(self):
+        if self.cycle:
+            return self.cycle.name
+        return "Без цикла"
+
 
 class Library(models.Model):
     READING = "R"
