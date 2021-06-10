@@ -16,6 +16,7 @@ urlpatterns = [
 
     path('friends/send/<int:user_id>/', views.send_friend_request, name='send_friend_request'),
     path('friends/add/<int:request_id>/', views.accept_friend_request, name='accept_friends'),
-    path('subscribers/', views.AccountSubscribersList.as_view(), name='subscriber_list')
+    path('subscribers/', views.AccountSubscribersList.as_view(), name='subscriber_list'),
+    path('friends/', views.AccountFriendList.as_view(), name='friends_list')
 ]
 

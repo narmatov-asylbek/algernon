@@ -14,6 +14,7 @@ from .models import Contact, CustomUser, Friend
 
 User = get_user_model()
 
+
 class LoginView(View):
     def get(self, request, *args, **kwargs):
         form = LoginForm()
@@ -167,3 +168,11 @@ class AccountSubscribersList(LoginRequiredMixin, View):
             "is_subscribers_active": True
         }
         return render(request, 'account/subscribers.html', context)
+
+
+class AccountFriendList(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            "is_friends_active": True
+        }
+        return render(request, 'account/friends.html', context)

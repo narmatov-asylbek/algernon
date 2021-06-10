@@ -1,0 +1,48 @@
+{% extends 'profile_base.html' %}
+{% load static %}
+
+{% block title %}
+    Мои Циклы
+{% endblock title %}
+
+{% block content %}
+    <section class="section">
+        <div class="columns">
+            <div class="column is-4"><h1 class="title is-5">Ваши Рецензии</h1></div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                {% for review in reviews %}
+                    <div class="block is-border-light-gray m-2" id="review_{{ review.id }}">
+                        <div class="field p-2">
+                            <a href="{{review.get_absolute_url}}"
+                               class="is-size-4 has-text-info">Рецензия на книгу "{{ review.book.title }}"</a>
+                        </div>
+                        <div class="field is-grouped mt-5 p-2">
+                            <p class="control is-pulled-right">
+                                <a href="{{ review.get_absolute_url }}"
+                                        class="button is-link">
+                                    Подробнее
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="block mt-5" style="border: 1px solid var(--gray-light-1)">
+                        <div class="columns is-centered">
+                            <div class="column is-8">
+                                <div class="block p-5 has-text-centered">
+                                    <h4 class="title is-4 p-5">Вы пока не написали ни одной рецензии</h4>
+                                    <a class="button is-link is-outlined is-medium" href="/">Вернуться на главное меню</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

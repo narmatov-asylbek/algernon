@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'authors.apps.AuthorsConfig',
     'comments.apps.CommentsConfig',
     'reader.apps.ReaderConfig',
+    'reviews.apps.ReviewsConfig',
     'django_quill',
 ]
 
@@ -142,3 +143,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user
 AUTH_USER_MODEL = 'account.CustomUser'
 LOGIN_URL = 'account:login'
+
+QUILL_CONFIGS = {
+    'default': {
+        'theme': 'snow',
+        'modules': {
+            'syntax': True,
+            'toolbar': [
+                [
+                    {'font': []},
+                    {'header': []},
+                    {'align': []},
+                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    {'color': []},
+                    {'background': []},
+                ],
+                ['code-block', 'link'],
+                ['clean'],
+            ]
+        }
+    }
+}

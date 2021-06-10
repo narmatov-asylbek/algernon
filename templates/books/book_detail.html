@@ -88,16 +88,16 @@
         <div class="columns">
             <div class="column is-9 box">
                 <div class="columns">
-                    <div class="column is-5">
+                    <div class="column is-6">
                         <div class="tabs is-medium">
                             <ul>
-                                <li class="is-active"><a>Комментарии</a></li>
-                                <li><a>Рецензии</a></li>
+                                <li class="is-active"><a href="{{ book.get_absolute_url }}">Комментарии({{ book.get_comment_count }})</a></li>
+                                <li><a href="{% url 'reviews:review_list' book.id %}">Рецензии({{ book.get_reviews_count }})</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="column is-3 is-offset-4">
-                        <a href="" class="button is-link">Написать рецензию</a>
+                    <div class="column is-3 is-offset-3">
+                        <a href="{% url 'reviews:new_review' book.id %}" class="button is-link">Написать рецензию</a>
                     </div>
                 </div>
                 <div class="block">

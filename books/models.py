@@ -157,7 +157,10 @@ class Book(models.Model):
         return round(sum([chapter.get_chapter_author_list_len() for chapter in chapters]), 2)
 
     def get_comment_count(self):
-        return len([comment for comment in self.comments.all()])
+        return self.comments.count()
+
+    def get_reviews_count(self):
+        return self.reviews.count()
 
     # TODO: Remove this method
     def get_can_download_options(self):

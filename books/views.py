@@ -168,8 +168,8 @@ class EditCycleView(View):
 
         if cycle_form.is_valid():
             cycle_form.save()
-            return JsonResponse({'success': True})
-        return JsonResponse({'success': False})
+
+        return redirect(reverse('authors:authors_cycles'))
 
 
 class CycleDetailView(DetailView):

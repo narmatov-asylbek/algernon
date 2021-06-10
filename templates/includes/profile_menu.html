@@ -4,7 +4,6 @@
     Основная информация
   </p>
   <ul class="menu-list">
-    <li><a>Лента Новостей</a></li>
     <li><a class="{% if profile_active %}is-active{% endif %}" href="{{ request.user.get_absolute_url }}">Профиль</a></li>
     <li><a class="{% if lib_active %}is-active{% endif %}" href="{{ request.user.get_account_lib_url }}">Библиотека</a></li>
   </ul>
@@ -12,15 +11,9 @@
     Остальное
   </p>
   <ul class="menu-list">
-    <li><a>Друзья</a></li>
+    <li><a class="{% if is_friends_active %}is-active{% endif %}" href="{% url 'account:friends_list' %}">Друзья</a></li>
     <li>
       <a class="{% if is_subscribers_active %}is-active{% endif %}" href="{% url 'account:subscriber_list' %}">Подписчики</a>
-    </li>
-    <li>
-      <a class="">Комментарии</a>
-    </li>
-    <li>
-      <a class="">Рейтинг моих читателей</a>
     </li>
   </ul>
 </aside>

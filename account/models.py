@@ -51,6 +51,8 @@ class CustomUser(AbstractUser):
             self.slug = slugify(self.name)
         if not self.username:
             self.username = self.email
+        if not self.name:
+            self.name = self.username
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

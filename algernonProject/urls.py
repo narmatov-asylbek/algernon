@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('chapters.urls', namespace='chapters')),
     path('account/', include('account.urls', namespace='account')),
     path('comments/', include('comments.urls', namespace='comments')),
+    path('', include('reviews.urls', namespace='reviews')),
     path('admin/', admin.site.urls),
 ]
 

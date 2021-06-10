@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <div class="container section">
+        <div class="columns is-multiline box">
+            <div class="navbar-divider"></div>
+            <div class="column is-12 mb-2" style="border-bottom: 1px solid #e1e8ed;}">
+                <div class="columns">
+                    <div class="column is-2">
+                        <a href="{{ book.get_absolute_url }}">
+                            <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="is-146-204">
+                        </a>
+                    </div>
+                    <div class="column is-10 ml-2">
+                        <div class="book_title">
+                            <a href="{{ book.get_absolute_url }}" class="title is-6 has-text info">
+                                {{ book.title }}
+                            </a>
+                        </div>
+                        <div class="book_author">
+                            <p><a href="{{ book.author.get_author_url }}" class="is-link">{{ book.author.name }}</a></p>
+                        </div>
+                        <div class="book_stats"></div>
+                        <div class="book_description">
+                            {{ book.description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+    <section class="section box mt-5">
+        <h1 class="title is-5 has-text-info">Написать рецензию</h1>
+        <div class="columns is-centered">
+            <div class="column is-12">
+                <form action="{% url 'reviews:new_review' book.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    <div class="field">
+                        <label class="label" for="{{ form.content.id_for_label }}">Текст рецензии</label>
+                        <div class="control">
+                            {{ form.content }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-success is-outlined is-pulled-right is-rounded is-light" type="submit">Опубликовать</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

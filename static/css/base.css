@@ -8,6 +8,9 @@ body {
 .is-border-light-gray {
     border: 1px solid var(--gray-light-5)
 }
+.ql-editor{
+    min-height:400px;
+}
 .is-146-204 {
     height: 204px !important;
     width: 146px !important;

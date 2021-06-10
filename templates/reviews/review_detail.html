@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <div class="container section">
+        <div class="columns is-multiline box">
+            <div class="columns">
+                <div class="column is-12">
+                    <h4 class="is-4 title">Рецензия на книгу "{{ book.title }}"</h4>
+                    <div class="review-author">
+                        <span>От: <a href="{{ review.author.get_author_url }}">{{ review.author.name }}</a></span>
+                    </div>
+                    <div class="review-book">
+                        <span>На книгу: <a href="{{ review.book.get_absolute_url }}">{{ review.book.title }}</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-divider"></div>
+            <div class="column is-12 mb-2" style="border-bottom: 1px solid #e1e8ed;}">
+                <div class="columns">
+                    <div class="column is-2">
+                        <a href="{{ book.get_absolute_url }}">
+                            <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="is-146-204">
+                        </a>
+                    </div>
+                    <div class="column is-10 ml-2">
+                        <div class="book_title">
+                            <a href="{{ book.get_absolute_url }}" class="title is-6 has-text info">
+                                {{ book.title }}
+                            </a>
+                        </div>
+                        <div class="book_author">
+                            <p><a href="{{ book.author.get_author_url }}" class="is-link">{{ book.author.name }}</a></p>
+                        </div>
+                        <div class="book_stats"></div>
+                        <div class="book_description">
+                            {{ book.description }}
+                        </div>
+                        <div class="detail-button p-4">
+                            <a href="{{ book.get_absolute_url }}" class="is-link button is-small is-pulled-right">На страницу книги</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <section class="section box">
+            <div class="columns is-centered">
+                <div class="column is-12">
+                    <div class="block mt-3">
+                        <h3 class="title is-3 has-text-link">Текст рецензии</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column is-12">
+                    {{ review.content.html | safe }}
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
