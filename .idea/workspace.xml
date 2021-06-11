@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf609701-2cc1-419d-9075-c351a10939be" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/algernonProject.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
@@ -82,7 +84,7 @@
       <workItem from="1622434346098" duration="15322000" />
       <workItem from="1622557962435" duration="88910000" />
       <workItem from="1622956129493" duration="108711000" />
-      <workItem from="1623387421433" duration="5370000" />
+      <workItem from="1623387421433" duration="5529000" />
     </task>
     <servers />
   </component>
