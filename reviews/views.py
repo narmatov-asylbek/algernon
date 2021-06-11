@@ -10,6 +10,7 @@ from .forms import ReviewForm
 
 @login_required
 def create_review(request, book_id):
+    """ Creating a new review to a specified book """
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -30,6 +31,7 @@ def create_review(request, book_id):
 
 
 def review_list(request, book_id):
+    """ Showing reviews of particular book """
     if request.method == 'GET':
         book = get_object_or_404(Book, id=book_id)
         reviews = Review.objects.filter(book=book)
@@ -41,6 +43,7 @@ def review_list(request, book_id):
 
 
 def review_detail(request, book_id, review_id):
+    """ Showing review text """
     if request.method == 'GET':
         book = get_object_or_404(Book, id=book_id)
         review = get_object_or_404(Review, book=book, id=review_id)
@@ -53,6 +56,7 @@ def review_detail(request, book_id, review_id):
 
 @login_required
 def account_review_list(request):
+    """ Showing reviews created by active user """
     if request.method == 'GET':
         reviews = Review.objects.filter(author=request.user)
         context = {
@@ -64,6 +68,7 @@ def account_review_list(request):
 @login_required
 @require_POST
 def delete_review(request, id):
+    """ Deleting review and returning result """
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         review = get_object_or_404(Review, id=id)
         if review.author == request.user:

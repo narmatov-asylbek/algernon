@@ -15,6 +15,7 @@ from .forms import CycleForm, BookForm
 
 
 class ShowCaseBookList(ListView):
+    """ View representing homepage """
     template_name = 'homepage.html'
     context_object_name = 'books'
     model = Book
@@ -31,6 +32,7 @@ class BookListView(ListView):
 
 
 class BookListByGenreView(ListView):
+    """ Filtering books by genres """
     model = Book
     template_name = 'books/book_list.html'
     context_object_name = 'book_list'
@@ -63,7 +65,7 @@ class BookDetailView(View):
 
 
 class AddBookView(LoginRequiredMixin, View):
-
+    """ View for adding a new book """
     def get(self, request, *args, **kwargs):
         form = BookForm()
         context = {
@@ -82,6 +84,7 @@ class AddBookView(LoginRequiredMixin, View):
 
 
 class UpdateBookSettings(LoginRequiredMixin, View):
+    """ View for updating book settings """
     def get(self, request, pk, *args, **kwargs):
         book = get_object_or_404(Book, pk=pk)
         if book.author != request.user:
@@ -107,6 +110,7 @@ class UpdateBookSettings(LoginRequiredMixin, View):
 
 
 class UpdateBookTextView(View):
+    """ Showing books information """
     def get(self, request, id, *args, **kwargs):
         book = get_object_or_404(Book, id=id, author=request.user)
         context = {
@@ -116,6 +120,7 @@ class UpdateBookTextView(View):
 
 
 class DeleteCycleView(LoginRequiredMixin, View):
+    """ View for deleting cycle """
     def post(self, request, book_id):
         book = get_object_or_404(Book, author=request.user, id=book_id)
         book.delete()
@@ -123,6 +128,7 @@ class DeleteCycleView(LoginRequiredMixin, View):
 
 
 class AddCycleView(View):
+    """ View for adding a new cycle """
     def get(self, request, *args, **kwargs):
         form = CycleForm()
         context = {
@@ -144,6 +150,7 @@ class AddCycleView(View):
 @login_required
 @require_POST
 def delete_cycle(request, id):
+    """ Deleting cycle """
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         cycle = get_object_or_404(Cycle, id=id)
         if cycle.creator == request.user:
@@ -153,6 +160,7 @@ def delete_cycle(request, id):
 
 
 class EditCycleView(View):
+    """ Editing Cycle information """
     def get(self, request, id):
         cycle = get_object_or_404(Cycle, id=id, creator=request.user)
         cycle_form = CycleForm(instance=cycle)
@@ -181,6 +189,7 @@ class CycleDetailView(DetailView):
 @require_POST
 @login_required
 def add_to_library(request, book_id):
+    """ Add book to user's reading list """
     if request.method == 'POST':
         book = get_object_or_404(Book, id=book_id)
         library, created = Library.objects.get_or_create(user=request.user)
@@ -196,6 +205,7 @@ def add_to_library(request, book_id):
 @require_POST
 @login_required
 def add_like_to_book(request, book_id):
+    """ Adding like to book """
     if request.method == 'POST':
         book = Book.objects.get(id=book_id)
         like, created = Like.objects.get_or_create(user=request.user, book=book)

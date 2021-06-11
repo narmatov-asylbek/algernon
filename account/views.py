@@ -9,9 +9,10 @@ from django.contrib.auth import get_user_model
 from django.http.response import JsonResponse
 
 from .forms import LoginForm, SettingsForm, ContactForm, CustomUserCreationForm
-from books.models import Book, Library
+from books.models import Library
 from .models import Contact, CustomUser, Friend
 
+# Getting user model
 User = get_user_model()
 
 
@@ -33,15 +34,14 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    messages.success(request, 'Вы успешно вошли в аккаунт')
                     return redirect('/')
-                messages.error(request, 'Аккаунт заблокирован')
                 return redirect('/')
             messages.error(request, 'Неправильные данные. Проверьте правильность')
             return render(request, 'account/login.html', {'form': form})
 
 
 class UserSettingsUpdateView(LoginRequiredMixin, View):
+    """ View for showing User information form """
     def get(self, request, *args, **kwargs):
         settings_form = SettingsForm(instance=request.user)
         contact_form = ContactForm(instance=request.user.contact)
@@ -55,6 +55,7 @@ class UserSettingsUpdateView(LoginRequiredMixin, View):
 @login_required
 @require_POST
 def update_user_settings(request):
+    """ Update user information """
     settings_form = SettingsForm(request.POST, request.FILES, instance=request.user)
 
     if settings_form.is_valid():
@@ -67,6 +68,7 @@ def update_user_settings(request):
 @login_required
 @require_POST
 def update_user_contacts(request):
+    """ Update user contact information """
     contact_form = ContactForm(request.POST, request.FILES, instance=request.user.contact)
 
     if contact_form.is_valid():
@@ -75,6 +77,7 @@ def update_user_contacts(request):
 
 
 class UserRegistrationView(View):
+    """ View for creating new users """
     def get(self, request, *args, **kwargs):
         form = CustomUserCreationForm()
         context = {
@@ -104,6 +107,7 @@ class UserRegistrationView(View):
 
 
 class UserLogoutView(View):
+    """ Redirecting to homepage after logout """
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             logout(request)
@@ -112,6 +116,7 @@ class UserLogoutView(View):
 
 
 class ProfileInfoView(LoginRequiredMixin, View):
+    """ View for showing information about user """
     def get(self, request, slug):
         user = CustomUser.objects.get(slug=slug)
         friend_requests = user.from_users.all()
@@ -123,7 +128,8 @@ class ProfileInfoView(LoginRequiredMixin, View):
         return render(request, 'account/profile.html', context)
 
 
-class AccountLibraryView(View):
+class AccountLibraryView(LoginRequiredMixin, View):
+    """ View for showing books added to user Library """
     def get(self, request, slug):
         user = CustomUser.objects.get(slug=slug)
         library = Library.objects.get(user=user)
@@ -139,6 +145,7 @@ class AccountLibraryView(View):
 @login_required
 @require_POST
 def send_friend_request(request, user_id):
+    """ Sending friend request. User needs to authenticated """
     from_user = request.user
     to_user = User.objects.get(id=user_id)
     if from_user == to_user:
@@ -153,6 +160,7 @@ def send_friend_request(request, user_id):
 @login_required
 @require_POST
 def accept_friend_request(request, request_id):
+    """ Accepting friend request """
     friend_request = Friend.objects.get(id=request_id)
     if friend_request.to_user == request.user:
         friend_request.to_user.friends.add(request.user)
@@ -163,6 +171,7 @@ def accept_friend_request(request, request_id):
 
 
 class AccountSubscribersList(LoginRequiredMixin, View):
+    """ View for showing friend requests """
     def get(self, request, *args, **kwargs):
         context = {
             "is_subscribers_active": True
@@ -171,8 +180,10 @@ class AccountSubscribersList(LoginRequiredMixin, View):
 
 
 class AccountFriendList(LoginRequiredMixin, View):
+    """ View for showing friend list """
     def get(self, request, *args, **kwargs):
         context = {
             "is_friends_active": True
         }
         return render(request, 'account/friends.html', context)
+

@@ -5,6 +5,7 @@ from books.models import Book
 
 
 class Comment(models.Model):
+    """ Model for adding comments to books and to other comments """
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -28,10 +29,3 @@ class Comment(models.Model):
     def __str__(self):
         return str(self.id)
 
-    def serialize(self):
-        return {
-            'author': self.user.name,
-            'author_image': self.user.get_image_url(),
-            'comment_text': self.comment_text,
-            'created_at': self.created_at
-        }

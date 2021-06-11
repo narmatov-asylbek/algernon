@@ -8,6 +8,7 @@ from books.models import Book
 
 
 class Chapter(models.Model):
+    """ Model for book chapters. One book can have many chapters """
     STATUS = (
         ('D', _('Draft')),
         ('P', _('Published'))

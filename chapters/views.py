@@ -11,6 +11,7 @@ from books.models import Book
 
 
 class AddChapterView(LoginRequiredMixin, View):
+    """ View for adding a new chapter """
     def get(self, request, book_id):
         book = get_object_or_404(Book, id=book_id, author=request.user)
         form = ChapterForm()
@@ -32,6 +33,7 @@ class AddChapterView(LoginRequiredMixin, View):
 
 
 class UpdateChapterView(View):
+    """ View for updating chapter's text """
     def get(self, request, book_id, id):
         chapter = Chapter.objects.get(book_id=book_id, id=id, author=request.user)
         form = ChapterForm(instance=chapter)
@@ -51,6 +53,7 @@ class UpdateChapterView(View):
 @login_required
 @require_POST
 def delete_chapter(request, book_id, chapter_id):
+    """ Dynamically deleting chapter """
     chapter = get_object_or_404(Chapter, book_id=book_id, id=chapter_id)
     chapter.delete()
     return JsonResponse({'success': True, 'id': chapter_id}, status=200)

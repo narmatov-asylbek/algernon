@@ -1,10 +1,9 @@
 import json
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.views.decorators.http import require_POST
 
-from .forms import CommentForm
 from .models import Comment
 from books.models import Book
 
@@ -12,6 +11,7 @@ from books.models import Book
 @login_required
 @require_POST
 def post_comment(request, id):
+    """ Creating a new comment """
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         book = get_object_or_404(Book, id=id)
         author = request.user

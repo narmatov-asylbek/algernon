@@ -7,6 +7,7 @@ from django.contrib.auth.views import get_user_model
 
 
 class AuthorsCreatedBookList(LoginRequiredMixin, ListView):
+    """ View for showing user's created books """
     template_name = 'authors/created_books.html'
     model = Book
     context_object_name = 'books'
@@ -21,7 +22,8 @@ class AuthorsCreatedBookList(LoginRequiredMixin, ListView):
         return context
 
 
-class AuthorsCycleList(ListView):
+class AuthorsCycleList(LoginRequiredMixin, ListView):
+    """ View for showing list of user's cycles """
     model = Cycle
     template_name = 'books/created_cycles.html'
     context_object_name = 'cycles'
@@ -32,6 +34,7 @@ class AuthorsCycleList(ListView):
 
 
 class AuthorDetailView(DetailView):
+    """ View for showing actual information about author"""
     model = get_user_model()
     template_name = 'authors/detail.html'
     context_object_name = 'author'

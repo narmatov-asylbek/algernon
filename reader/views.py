@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from chapters.models import Chapter
-# Create your views here.
 
 
 class ReadChaptersView(View):
+    """ View for reading a book chapter """
     def get(self, request, book_id, chapter_id=None, *args, **kwargs):
         try:
             if chapter_id:
@@ -13,7 +13,7 @@ class ReadChaptersView(View):
             else:
                 chapter = Chapter.objects.get(book_id=book_id, id=1)
         except Chapter.DoesNotExist:
-            chapter = "Chapter does not exist"
+            chapter = "В этой книге пока нет ни одной главы"
         context = {
             'chapter': chapter
         }

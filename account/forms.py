@@ -14,6 +14,9 @@ class LoginForm(forms.Form):
 
 
 class SettingsForm(forms.ModelForm):
+    """
+    Form for changing user information
+    """
     class Meta:
         model = CustomUser
         fields = ['image', 'username', 'slug',
@@ -54,6 +57,7 @@ class SettingsForm(forms.ModelForm):
 
 
 class ContactForm(forms.ModelForm):
+    """ Form for modifying user's contact information """
     class Meta:
         model = Contact
         fields = ['website', 'twitter',
@@ -78,6 +82,9 @@ class ContactForm(forms.ModelForm):
 
 
 class CustomUserCreationForm(UserCreationForm):
+    """
+    Form for creating a new user
+    """
     class Meta:
         model = CustomUser
         fields = ['email', 'name']
@@ -92,3 +99,12 @@ class CustomUserCreationForm(UserCreationForm):
         if CustomUser.objects.filter(name=name).exists():
             raise ValidationError('Данное имя пользователя уже занято')
         return name
+
+    def clean_password2(self):
+        password_2 = self.cleaned_data['password2']
+        password = self.cleaned_data['password']
+        if password != password_2:
+            return ValidationError("Пароли не совпадают. Попробуйте еще раз!")
+        return password_2
+
+

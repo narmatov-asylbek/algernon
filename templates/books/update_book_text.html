@@ -93,7 +93,7 @@
                             <a href="" class="button is-small"><i class="fas fa-book-open"></i></a>
                             <a href="" class="button is-small"><i class="far fa-eye"></i></a>
                             <button type="button" data-url="{{ chapter.get_chapter_delete_url }}"
-                                    class="button is-small is-danger is-outlined" id="delete_chapter_button">
+                                    class="button is-small is-danger is-outlined delete_chapter_button">
                                 <i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
@@ -118,10 +118,10 @@
             }
         }
         const chapterModal = document.getElementById("chapter-modal")
-        const chapterDeleteButton = document.getElementById("delete_chapter_button")
-        if (chapterDeleteButton != null) {
-            chapterDeleteButton.onclick = function () {
-                fetch(this.dataset.url, {
+        const chapterDeleteButton = document.getElementsByClassName("delete_chapter_button")
+        for (let i=0; i < chapterDeleteButton.length; ++i) {
+            chapterDeleteButton[i].onclick = function () {
+                fetch(chapterDeleteButton[i].dataset.url, {
                     headers: {
                         'X-CSRFToken': csrftoken,
                         'X-Requested-With': 'XMLHttpRequest',

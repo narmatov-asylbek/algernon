@@ -4,6 +4,9 @@ from books.models import Book, Cycle
 
 
 class BookForm(forms.ModelForm):
+    """
+    Form for creating and modifying book information
+    """
     class Meta:
         model = Book
         fields = ['cover', 'title', 'type', 'genre', 'cycle', 'description', 'remark',
@@ -62,6 +65,9 @@ class BookForm(forms.ModelForm):
 
 
 class CycleForm(forms.ModelForm):
+    """
+    Form for creating and modifying cycle information
+    """
     class Meta:
         model = Cycle
         fields = ['name', 'description', 'is_finished']
@@ -77,6 +83,6 @@ class CycleForm(forms.ModelForm):
         }
         labels = {
             'name': 'Название Цикла',
-            'desciption': 'Описание',
+            'description': 'Описание',
             'is_finished': 'Цикл завершен'
         }

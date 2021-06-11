@@ -2,13 +2,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 from django.conf import settings
-from django.db.models import F
 
-from django_quill.fields import QuillField
 from pytils.translit import slugify
 
 
 class Cycle(models.Model):
+    """ Book cycle for books """
+
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -35,6 +35,7 @@ class Cycle(models.Model):
 
 
 class Type(models.Model):
+    """ Book Type, needs to be created: novel, fairy tale etc. """
     title = models.CharField(
         max_length=250,
         unique=True,
@@ -50,6 +51,8 @@ class Type(models.Model):
 
 
 class Genre(models.Model):
+    """ Simple model representing book genre. Needs to be extended """
+
     slug = models.SlugField()
     name = models.CharField(
         max_length=150,
@@ -66,6 +69,7 @@ class Genre(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        """ Creating slug from genre name if exists """
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
@@ -75,6 +79,7 @@ class Genre(models.Model):
 
 
 class Book(models.Model):
+    """ Basic model containing book information """
 
     BOOK_CHOICES = (
         ("A", _("All")),
@@ -190,6 +195,8 @@ class Book(models.Model):
 
 
 class Library(models.Model):
+    """ Book library for user. It will be automatically created alongside with user """
+
     READING = "R"
     READ = "AR"
     TO_READ = "TR"
@@ -222,6 +229,8 @@ class Library(models.Model):
 
 
 class Like(models.Model):
+    """ Model for adding likes to books. Needs to be extended """
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

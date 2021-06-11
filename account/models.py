@@ -10,6 +10,8 @@ from django_quill.fields import QuillField
 
 
 class CustomUser(AbstractUser):
+    """ Custom user Model """
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
     email = models.EmailField(_('Email'), unique=True)
@@ -45,6 +47,11 @@ class CustomUser(AbstractUser):
         return self.email
 
     def save(self, *args, **kwargs):
+        """
+        Creating slug for user using username if exists.
+        Also creating name for user if not specified
+        """
+
         if not self.slug:
             if not self.name:
                 self.slug = slugify(self.username)
@@ -77,6 +84,8 @@ class CustomUser(AbstractUser):
 
 
 class Contact(models.Model):
+    """ Contact information. Automatically created alongside with user """
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -94,6 +103,8 @@ class Contact(models.Model):
 
 
 class Friend(models.Model):
+    """ Friend request, which will be deleted after user accept friend request """
+
     from_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

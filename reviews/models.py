@@ -7,6 +7,7 @@ from django_quill.fields import QuillField
 
 
 class Review(models.Model):
+    """ Model for adding reviews for books """
     book = models.ForeignKey(
         Book,
         on_delete=models.CASCADE,
