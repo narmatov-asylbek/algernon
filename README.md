@@ -4,6 +4,12 @@
 In active development.
 
 A web app, where everyone can post and read books.
+### Stack
+- Python3
+- Django
+- Django-quill-editor
+- HTML/CSS
+- Javascript
 ## Features
 
 ### Books
